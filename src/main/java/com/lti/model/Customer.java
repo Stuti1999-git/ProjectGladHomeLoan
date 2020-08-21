@@ -48,4 +48,86 @@ public class Customer {
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Application> application;
 
+	public int getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(int customerId) {
+		this.customerId = customerId;
+	}
+
+	public String getCustomerFirstName() {
+		return customerFirstName;
+	}
+
+	public void setCustomerFirstName(String customerFirstName) {
+		this.customerFirstName = customerFirstName;
+	}
+
+	public String getCustomerLastName() {
+		return customerLastName;
+	}
+
+	public void setCustomerLastName(String customerLastName) {
+		this.customerLastName = customerLastName;
+	}
+
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	public String getCustomerPassword() {
+		return customerPassword;
+	}
+
+	public void setCustomerPassword(String customerPassword) {
+		this.customerPassword = customerPassword;
+	}
+
+	public String getCustomerMobileNumber() {
+		return customerMobileNumber;
+	}
+
+	public void setCustomerMobileNumber(String customerMobileNumber) {
+		this.customerMobileNumber = customerMobileNumber;
+	}
+
+	public String getCustomerCity() {
+		return customerCity;
+	}
+
+	public void setCustomerCity(String customerCity) {
+		this.customerCity = customerCity;
+	}
+
+	public String getCustomerEmploymentType() {
+		return customerEmploymentType;
+	}
+
+	public void setCustomerEmploymentType(String customerEmploymentType) {
+		this.customerEmploymentType = customerEmploymentType;
+	}
+
+	public LocalDate getCustomerdateOfBirth() {
+		return customerdateOfBirth;
+	}
+
+	public void setCustomerdateOfBirth(LocalDate customerdateOfBirth) {
+		this.customerdateOfBirth = customerdateOfBirth;
+	}
+
+	public List<Application> getApplication() {
+		return application;
+	}
+
+	public void setApplication(List<Application> application) {
+		this.application = application;
+	}
+	
+	
+
 }
