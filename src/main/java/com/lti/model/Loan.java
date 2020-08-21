@@ -20,9 +20,7 @@ public class Loan {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "loan_sequence")
 	private int loanId;
 
-	@OneToOne
-	@JoinColumn(name = "customer_id")
-	private Customer customer;
+	
 
 	@Column
 	private double maxLoanAmount;

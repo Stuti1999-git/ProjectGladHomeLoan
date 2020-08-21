@@ -34,8 +34,8 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
-	public int addLoanApplication(Loan loan) {
-		return repo.addLoanApplication(loan);
+	public int addLoanApplication(Application application) {
+		return repo.addLoanApplication(application);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
-	public List<Application> viewAllUsers() {
+	public List<Customer> viewAllUsers() {
 		return repo.viewAllUsers();
 	}
 
@@ -54,7 +54,7 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
-	public Application findAUser(int userId) {
+	public Customer findAUser(int userId) {
 		return repo.findAUser(userId);
 	}
 

@@ -17,6 +17,7 @@ public class ControllerClass {
 	@Autowired
 	ServiceInterface userService;
 
+	
 	public int addUser(Customer user) {
 		return userService.registerUser(user);
 	}
@@ -29,20 +30,20 @@ public class ControllerClass {
 		return userService.isValidUser(userId, userPassword);
 	}
 
-	public int addloanApplication(Loan loan) {
+	public int addloanApplication(Application application) {
 
-		return userService.addLoanApplication(loan);
+		return userService.addLoanApplication(application);
 	}
 
 	public boolean adminLogin(int adminId, String adminPassword) {
 		return userService.adminLogin(adminId, adminPassword);
 	}
 	
-	public Application findAUSer(int userId) {
+	public Customer findAUSer(int userId) {
 		return userService.findAUser(userId);
 	}
 
-	public List<Application> viewAllUsers() {
+	public List<Customer> viewAllUsers() {
 		return userService.viewAllUsers();
 	}
 

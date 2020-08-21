@@ -5,13 +5,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
-import com.lti.model.Loan;
 
 @Repository
 public class RepositoryClass implements RepositoryInterface {
@@ -21,6 +21,7 @@ public class RepositoryClass implements RepositoryInterface {
 	
 	
 	@Override
+	@Transactional
 	public int registerUser(Customer user) {
 		Customer u = em.merge(user);
 		return u.getCustomerId();
@@ -35,6 +36,7 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
+	@Transactional
 	public boolean updateUser(Customer user) {
 		Customer u = em.find(Customer.class, user.getCustomerId());
 		if (u != null) {
@@ -45,9 +47,10 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
-	public int addLoanApplication(Loan loan) {
-		// TODO Auto-generated method stub
-		return 0;
+	@Transactional
+	public int addLoanApplication(Application application) {
+		Application u = em.merge(application);
+		return u.getApplicationId();
 	}
 
 	@Override
@@ -59,14 +62,16 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
-	public List<Application> viewAllUsers() {
-		String sql = "select user from Application user order by user.userId";
+	public List<Customer> viewAllUsers() {
+		String sql = "select cust from Customer cust order by cust.customerId";
 		Query qry = em.createQuery(sql);
-		List<Application> users = qry.getResultList();//typed query
+		List<Customer> users = qry.getResultList();//typed query
 		return users;
 	}
 
+	
 	@Override
+	@Transactional
 	public boolean updateAdmin(Admin admin) {
 		Admin ad = em.find(Admin.class, admin.getAdminId());
 		if (ad != null) {
@@ -77,8 +82,8 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
-	public Application findAUser(int userId) {
-		Application user = em.find(Application.class, userId);
+	public Customer findAUser(int customerId) {
+		Customer user = em.find(Customer.class, customerId);
 		return user;
 	}
 

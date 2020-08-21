@@ -35,16 +35,10 @@ public class Application {
 	private String userPAN;
 
 	@Column
-	private LocalDate dateOfBirth;
-
-	@Column
 	private String aadharNumber;
 
 	@Column
 	private String Nationality;
-
-	@Column
-	private String employmentType;
 
 	@Column
 	private int retirementAge;
@@ -53,7 +47,7 @@ public class Application {
 	private String organisation;
 
 	@Column
-	private String income;
+	private double income;
 
 	private double loanAmount;
 
@@ -110,14 +104,7 @@ public class Application {
 		this.userPAN = userPAN;
 	}
 
-	public LocalDate getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
+	
 	public String getAadharNumber() {
 		return aadharNumber;
 	}
@@ -134,13 +121,7 @@ public class Application {
 		Nationality = nationality;
 	}
 
-	public String getEmploymentType() {
-		return employmentType;
-	}
-
-	public void setEmploymentType(String employmentType) {
-		this.employmentType = employmentType;
-	}
+	
 
 	public int getRetirementAge() {
 		return retirementAge;
@@ -158,11 +139,11 @@ public class Application {
 		this.organisation = organisation;
 	}
 
-	public String getIncome() {
+	public double getIncome() {
 		return income;
 	}
 
-	public void setIncome(String income) {
+	public void setIncome(double income) {
 		this.income = income;
 	}
 

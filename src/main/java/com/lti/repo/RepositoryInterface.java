@@ -16,7 +16,7 @@ public interface RepositoryInterface {
 	
 	public boolean updateUser(Customer user);
 	
-	public int addLoanApplication(Loan loan);
+	public int addLoanApplication(Application application);
 	
 	
 	
@@ -24,9 +24,9 @@ public interface RepositoryInterface {
 	
 	public boolean adminLogin(int employeeId,String adminPassword);
 	
-	public List<Application> viewAllUsers();
+	public List<Customer> viewAllUsers();
 	
 	public boolean updateAdmin(Admin admin);
 	
-	public Application findAUser(int userId);
+	public Customer findAUser(int userId);
 }
