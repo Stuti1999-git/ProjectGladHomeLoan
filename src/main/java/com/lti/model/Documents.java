@@ -8,12 +8,12 @@ import javax.persistence.OneToOne;
 @Entity
 public class Documents {
 
-	@Id
+	
 	@OneToOne
 	@JoinColumn(name="application_id")
 	private Application applicationDocument;
 	
-	@Column
+	@Id
 	private String panCard;
 	
 	@Column

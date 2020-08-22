@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
@@ -21,6 +22,7 @@ public class RepositoryClass implements RepositoryInterface {
 	
 	
 	@Override
+	@Transactional
 	public int registerUser(Customer user) {
 		Customer u = em.merge(user);
 		return u.getCustomerId();
@@ -35,6 +37,7 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
+	@Transactional
 	public boolean updateUser(Customer user) {
 		Customer u = em.find(Customer.class, user.getCustomerId());
 		if (u != null) {
@@ -45,11 +48,20 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
+	@Transactional
 	public int addLoanApplication(Loan loan) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
+	
+	@Override
+	@Transactional
+	public int registerAdmin(Admin admin) {
+		Admin ad = em.merge(admin);
+		return ad.getAdminId();
+	}
+	
 	@Override
 	public boolean adminLogin(int employeeId, String adminPassword) {
 		Admin admin= em.find(Admin.class, employeeId);
@@ -67,6 +79,7 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
+	@Transactional
 	public boolean updateAdmin(Admin admin) {
 		Admin ad = em.find(Admin.class, admin.getAdminId());
 		if (ad != null) {

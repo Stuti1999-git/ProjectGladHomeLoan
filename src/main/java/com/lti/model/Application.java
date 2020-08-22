@@ -54,12 +54,33 @@ public class Application {
 
 	@Column
 	private String income;
-
+	
+	@Column
 	private double loanAmount;
 
+	@Column
 	private int tenure;
 
+	@Column
 	private double downPayment;
+	
+	@Column
+	private String maritialStatus;
+	
+	@Column
+	private int noOfDependents;
+	
+	@Column
+	private double depandentMonthlyExpenses;
+	
+	@Column
+	private double personlExpenses;
+	
+	@Column
+	private String existingLoan;
+	
+	@Column
+	private double emiExistingLoan;
 
 	@OneToOne(mappedBy = "application",cascade = CascadeType.ALL)
 	private Property property;

@@ -21,6 +21,7 @@ public interface RepositoryInterface {
 	
 	
 	//Admin
+	int registerAdmin(Admin admin);
 	
 	public boolean adminLogin(int employeeId,String adminPassword);
 	
