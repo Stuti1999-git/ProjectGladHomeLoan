@@ -36,7 +36,8 @@ public class Admin {
 
 	@Column
 	private LocalDate dateOfBirth;
-
+	
+	@Column
 	private String gender;
 
 	public int getAdminId() {

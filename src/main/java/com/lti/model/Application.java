@@ -45,24 +45,117 @@ public class Application {
 
 	@Column
 	private String organisation;
-
+	
 	@Column
 	private double income;
-
+	
+	@Column
 	private double loanAmount;
 
+	@Column
 	private int tenure;
-
+	
+	@Column
 	private double downPayment;
-
+	
+	@Column
+	private String maritialStatus;
+	
+	@Column
+	private int noOfDependents;
+	
+	@Column
+	private double depandentMonthlyExpenses;
+	
+	@Column
+	private double personlExpenses;
+	
+	@Column
+	private String existingLoan;
+	
+	@Column
+	private double emiExistingLoan;
+	
+	@Column
+	private double maxLoanAmount; //read only field based on above parameters and will be calculated on front end
+	
 	@OneToOne(mappedBy = "application",cascade = CascadeType.ALL)
 	private Property property;
 	
 	@OneToOne(mappedBy = "applicationDocument",cascade = CascadeType.ALL)
 	private Documents document;
 	
+	@OneToOne(mappedBy = "applicationStatus",cascade = CascadeType.ALL)
+	private TrackStatus status;
+	
 	@OneToOne(mappedBy = "applicationLoan",cascade = CascadeType.ALL)
 	private Loan loan;
+	
+	public String getMaritialStatus() {
+		return maritialStatus;
+	}
+
+	public void setMaritialStatus(String maritialStatus) {
+		this.maritialStatus = maritialStatus;
+	}
+
+	public int getNoOfDependents() {
+		return noOfDependents;
+	}
+
+	public void setNoOfDependents(int noOfDependents) {
+		this.noOfDependents = noOfDependents;
+	}
+
+	public double getDepandentMonthlyExpenses() {
+		return depandentMonthlyExpenses;
+	}
+
+	public void setDepandentMonthlyExpenses(double depandentMonthlyExpenses) {
+		this.depandentMonthlyExpenses = depandentMonthlyExpenses;
+	}
+
+	public double getPersonlExpenses() {
+		return personlExpenses;
+	}
+
+	public void setPersonlExpenses(double personlExpenses) {
+		this.personlExpenses = personlExpenses;
+	}
+
+	public String getExistingLoan() {
+		return existingLoan;
+	}
+
+	public void setExistingLoan(String existingLoan) {
+		this.existingLoan = existingLoan;
+	}
+
+	public double getEmiExistingLoan() {
+		return emiExistingLoan;
+	}
+
+	public void setEmiExistingLoan(double emiExistingLoan) {
+		this.emiExistingLoan = emiExistingLoan;
+	}
+
+	public double getMaxLoanAmount() {
+		return maxLoanAmount;
+	}
+
+	public void setMaxLoanAmount(double maxLoanAmount) {
+		this.maxLoanAmount = maxLoanAmount;
+	}
+
+	public TrackStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TrackStatus status) {
+		this.status = status;
+	}
+
+	
 
 	public int getApplicationId() {
 		return applicationId;

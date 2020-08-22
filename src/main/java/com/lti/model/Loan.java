@@ -20,11 +20,6 @@ public class Loan {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "loan_sequence")
 	private int loanId;
 
-	
-
-	@Column
-	private double maxLoanAmount;
-
 	@Column
 	private double balance;
 
@@ -49,16 +44,10 @@ public class Loan {
 	@Column
 	private int emiAmount;
 
-	
-
 	@Column
 	private LocalDate verificationDate;
 
 	@OneToOne
 	@JoinColumn(name = "application_id")
 	private Application applicationLoan;
-
-	@OneToOne(mappedBy = "loan", cascade = CascadeType.ALL)
-	public TrackStatus status;
-
 }

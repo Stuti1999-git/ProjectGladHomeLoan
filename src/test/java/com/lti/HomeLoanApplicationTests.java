@@ -6,12 +6,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
+import com.lti.model.Admin;
+
 import com.lti.model.Application;
 import com.lti.model.Customer;
 import com.lti.repo.RepositoryInterface;
 
 @SpringBootTest
 class HomeLoanApplicationTests {
+
 
 	@Autowired
 	private RepositoryInterface repo;
@@ -30,9 +34,32 @@ class HomeLoanApplicationTests {
 		customer.setCustomerPassword("Stuti@123");
 		
 		repo.registerUser(customer);
-		
 	}
 	
+
+	
+	
+	@Test
+	void registerAdmin() {
+		Admin admin = new Admin();
+		admin.setAdminFirstName("Majrul");
+		admin.setAdminLastName("Ansari");
+		admin.setAdminEmail("majrul@gmail.com");
+		admin.setAdminPassword("majrul@123");
+		admin.setAdminContact("098765321");
+		admin.setDateOfBirth(LocalDate.of(1982, 02, 01));
+		admin.setGender("Male");
+		
+		System.out.println(repo.registerAdmin(admin));
+	}
+	
+	
+	@Test
+	void adminLogin() {
+		System.out.println(repo.adminLogin(20201, "majrul@123"));
+		
+	}
+
 	@Test
 	void addApplication() {
 		
@@ -48,6 +75,7 @@ class HomeLoanApplicationTests {
 		application.setRetirementAge(60);
 		application.setTenure(10);
 		application.setUserPAN("ABCD1234");
+		
 		
 		
 		System.out.println(repo.addLoanApplication(application));
@@ -76,9 +104,4 @@ class HomeLoanApplicationTests {
 		System.out.println(repo.findAUser(90501));
 	}
 	
-	
-	
-	
-	
-
 }
