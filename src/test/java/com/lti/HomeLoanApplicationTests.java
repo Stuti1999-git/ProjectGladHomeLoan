@@ -64,17 +64,36 @@ class HomeLoanApplicationTests {
 	void addApplication() {
 		
 		Application application = new Application();
-		application.setAadharNumber("9233756839999");
-		application.setAddress("1265 3b2 mohali");
-		application.setDownPayment(30000);
-		application.setGender("Female");
-		application.setIncome(50000);
-		application.setLoanAmount(1000000);
+//		application.setAadharNumber("9233756839999");
+//		application.setAddress("1265 3b2 mohali");
+//		application.setDownPayment(30000);
+//		application.setGender("Female");
+//		application.setIncome(50000);
+//		application.setLoanAmount(1000000);
+//		application.setNationality("Indian");
+//		application.setOrganisation("LTI");
+//		application.setRetirementAge(60);
+//		application.setTenure(10);
+//		application.setUserPAN("ABCD1234");
+		
+		application.setMaritialStatus("Married");
+		application.setNoOfDependents(1);
+		application.setDepandentMonthlyExpenses(100000);
+		application.setPersonlExpenses(100000);
+		application.setExistingLoan("Yes");
+		application.setEmiExistingLoan(2345);
+		application.setMaxLoanAmount(234);
+		application.setGender("Male");
+		application.setAddress("sdfg");
+		application.setUserPAN("vbnm");
+		application.setAadharNumber("sdfghj");
 		application.setNationality("Indian");
-		application.setOrganisation("LTI");
 		application.setRetirementAge(60);
-		application.setTenure(10);
-		application.setUserPAN("ABCD1234");
+		application.setOrganisation("vbnm");
+		application.setIncome(12345);
+		application.setLoanAmount(5671234);
+		application.setTenure(12);
+		application.setDownPayment(123);
 		
 		
 		
