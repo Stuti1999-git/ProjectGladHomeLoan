@@ -52,7 +52,15 @@ public class RepositoryClass implements RepositoryInterface {
 		Application u = em.merge(application);
 		return u.getApplicationId();
 	}
-
+	
+	
+	@Override
+	@Transactional
+	public int registerAdmin(Admin admin) {
+		Admin ad = em.merge(admin);
+		return ad.getAdminId();
+	}
+	
 	@Override
 	public boolean adminLogin(int employeeId, String adminPassword) {
 		Admin admin= em.find(Admin.class, employeeId);
@@ -87,5 +95,17 @@ public class RepositoryClass implements RepositoryInterface {
 		return user;
 	}
 
+
+	@Override
+	@Transactional
+	public boolean changeStatus(Application application) { //update status in database
+		Application app = em.find(Application.class, application.getApplicationId());
+		if (app != null) {
+			em.merge(application);
+			return true;
+		}
+		return false;
+	}
 	
+
 }

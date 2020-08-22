@@ -21,6 +21,7 @@ public interface RepositoryInterface {
 	
 	
 	//Admin
+	int registerAdmin(Admin admin);
 	
 	public boolean adminLogin(int employeeId,String adminPassword);
 	
@@ -29,4 +30,8 @@ public interface RepositoryInterface {
 	public boolean updateAdmin(Admin admin);
 	
 	public Customer findAUser(int userId);
+	
+	public boolean changeStatus(Application application); //Will pass full application from Admin side also with auto filled fields
+	
+	
 }
