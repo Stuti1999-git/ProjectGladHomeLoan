@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
-import com.lti.model.Loan;
 
 @Repository
 public class RepositoryClass implements RepositoryInterface {
@@ -49,9 +48,9 @@ public class RepositoryClass implements RepositoryInterface {
 
 	@Override
 	@Transactional
-	public int addLoanApplication(Loan loan) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addLoanApplication(Application application) {
+		Application u = em.merge(application);
+		return u.getApplicationId();
 	}
 	
 	
@@ -71,13 +70,14 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
-	public List<Application> viewAllUsers() {
-		String sql = "select user from Application user order by user.userId";
+	public List<Customer> viewAllUsers() {
+		String sql = "select cust from Customer cust order by cust.customerId";
 		Query qry = em.createQuery(sql);
-		List<Application> users = qry.getResultList();//typed query
+		List<Customer> users = qry.getResultList();//typed query
 		return users;
 	}
 
+	
 	@Override
 	@Transactional
 	public boolean updateAdmin(Admin admin) {
@@ -90,9 +90,21 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
-	public Application findAUser(int userId) {
-		Application user = em.find(Application.class, userId);
+	public Customer findAUser(int customerId) {
+		Customer user = em.find(Customer.class, customerId);
 		return user;
 	}
 
+	@Override
+	@Transactional
+	public boolean changeStatus(Application application) { //update status in database
+		Application app = em.find(Application.class, application.getApplicationId());
+		if (app != null) {
+			em.merge(application);
+			return true;
+		}
+		return false;
+	}
+	
+	
 }

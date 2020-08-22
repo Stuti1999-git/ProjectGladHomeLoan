@@ -35,32 +35,26 @@ public class Application {
 	private String userPAN;
 
 	@Column
-	private LocalDate dateOfBirth;
-
-	@Column
 	private String aadharNumber;
 
 	@Column
 	private String Nationality;
 
 	@Column
-	private String employmentType;
-
-	@Column
 	private int retirementAge;
 
 	@Column
 	private String organisation;
-
+	
 	@Column
-	private String income;
+	private double income;
 	
 	@Column
 	private double loanAmount;
 
 	@Column
 	private int tenure;
-
+	
 	@Column
 	private double downPayment;
 	
@@ -81,15 +75,87 @@ public class Application {
 	
 	@Column
 	private double emiExistingLoan;
-
+	
+	@Column
+	private double maxLoanAmount; //read only field based on above parameters and will be calculated on front end
+	
 	@OneToOne(mappedBy = "application",cascade = CascadeType.ALL)
 	private Property property;
 	
 	@OneToOne(mappedBy = "applicationDocument",cascade = CascadeType.ALL)
 	private Documents document;
 	
+	@OneToOne(mappedBy = "applicationStatus",cascade = CascadeType.ALL)
+	private TrackStatus status;
+	
 	@OneToOne(mappedBy = "applicationLoan",cascade = CascadeType.ALL)
 	private Loan loan;
+	
+	public String getMaritialStatus() {
+		return maritialStatus;
+	}
+
+	public void setMaritialStatus(String maritialStatus) {
+		this.maritialStatus = maritialStatus;
+	}
+
+	public int getNoOfDependents() {
+		return noOfDependents;
+	}
+
+	public void setNoOfDependents(int noOfDependents) {
+		this.noOfDependents = noOfDependents;
+	}
+
+	public double getDepandentMonthlyExpenses() {
+		return depandentMonthlyExpenses;
+	}
+
+	public void setDepandentMonthlyExpenses(double depandentMonthlyExpenses) {
+		this.depandentMonthlyExpenses = depandentMonthlyExpenses;
+	}
+
+	public double getPersonlExpenses() {
+		return personlExpenses;
+	}
+
+	public void setPersonlExpenses(double personlExpenses) {
+		this.personlExpenses = personlExpenses;
+	}
+
+	public String getExistingLoan() {
+		return existingLoan;
+	}
+
+	public void setExistingLoan(String existingLoan) {
+		this.existingLoan = existingLoan;
+	}
+
+	public double getEmiExistingLoan() {
+		return emiExistingLoan;
+	}
+
+	public void setEmiExistingLoan(double emiExistingLoan) {
+		this.emiExistingLoan = emiExistingLoan;
+	}
+
+	public double getMaxLoanAmount() {
+		return maxLoanAmount;
+	}
+
+	public void setMaxLoanAmount(double maxLoanAmount) {
+		this.maxLoanAmount = maxLoanAmount;
+	}
+
+	public TrackStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TrackStatus status) {
+		this.status = status;
+	}
+
+	
 
 	public int getApplicationId() {
 		return applicationId;
@@ -131,14 +197,7 @@ public class Application {
 		this.userPAN = userPAN;
 	}
 
-	public LocalDate getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
+	
 	public String getAadharNumber() {
 		return aadharNumber;
 	}
@@ -155,13 +214,7 @@ public class Application {
 		Nationality = nationality;
 	}
 
-	public String getEmploymentType() {
-		return employmentType;
-	}
-
-	public void setEmploymentType(String employmentType) {
-		this.employmentType = employmentType;
-	}
+	
 
 	public int getRetirementAge() {
 		return retirementAge;
@@ -179,11 +232,11 @@ public class Application {
 		this.organisation = organisation;
 	}
 
-	public String getIncome() {
+	public double getIncome() {
 		return income;
 	}
 
-	public void setIncome(String income) {
+	public void setIncome(double income) {
 		this.income = income;
 	}
 

@@ -9,11 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 @Entity
 public class TrackStatus {
-	
+
 	@OneToOne
-	@JoinColumn(name = "loan_id")
-	private Loan loan;
-	
+	@JoinColumn(name = "application_id")
+	private Application applicationStatus;
+
 	@Id
 	private String loanStatus;
 	

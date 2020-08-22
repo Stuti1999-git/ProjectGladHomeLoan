@@ -21,9 +21,6 @@ public class Loan {
 	private int loanId;
 
 	@Column
-	private double maxLoanAmount;
-
-	@Column
 	private double balance;
 
 	@Column
@@ -53,8 +50,4 @@ public class Loan {
 	@OneToOne
 	@JoinColumn(name = "application_id")
 	private Application applicationLoan;
-
-	@OneToOne(mappedBy = "loan", cascade = CascadeType.ALL)
-	public TrackStatus status;
-
 }

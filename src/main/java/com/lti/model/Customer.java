@@ -127,6 +127,16 @@ public class Customer {
 	public void setApplication(List<Application> application) {
 		this.application = application;
 	}
+
+	@Override
+	public String toString() {
+		return "Customer [customerId=" + customerId + ", customerFirstName=" + customerFirstName + ", customerLastName="
+				+ customerLastName + ", customerEmail=" + customerEmail + ", customerPassword=" + customerPassword
+				+ ", customerMobileNumber=" + customerMobileNumber + ", customerCity=" + customerCity
+				+ ", customerEmploymentType=" + customerEmploymentType + ", customerdateOfBirth=" + customerdateOfBirth
+				+ "]";
+	}
+
 	
 	
 
