@@ -2,14 +2,20 @@ package com.lti.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import com.lti.Dto.CustomerDto;
+import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
-import com.lti.model.Loan;
 import com.lti.service.ServiceInterface;
+import com.lti.status.Status;
+import com.lti.status.Status.StatusType;
+
 
 @Controller
 public class ControllerClass {
@@ -17,9 +23,30 @@ public class ControllerClass {
 	@Autowired
 	ServiceInterface userService;
 
-	
-	public int addUser(Customer user) {
-		return userService.registerUser(user);
+	@PostMapping(path="/registerUser")
+	public Status addUser(CustomerDto customerDto) {
+		try {
+			Customer customer = new Customer();
+			//BeanUtils.copyProperties(customerDto, customer);
+			
+			userService.registerUser(customer);
+			
+			
+			Status status = new Status();
+			status.setStatus(StatusType.SUCCESS);
+			status.setMessage("Registration successful");
+			return status;
+			
+		}
+		catch (CustomerServiceException e) {
+			
+			Status status = new Status();
+			status.setStatus(StatusType.FAILURE);
+			status.setMessage(e.getMessage());
+			return status;
+			
+		}
+		
 	}
 
 	public boolean updateUser(Customer user) {
@@ -46,7 +73,7 @@ public class ControllerClass {
 	public List<Customer> viewAllUsers() {
 		return userService.viewAllUsers();
 	}
-
+	
 	public boolean updateAdmin(Admin admin) {
 		
 		return userService.updateAdmin(admin);
