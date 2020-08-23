@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import com.lti.Dto.LoginDto;
+
+import com.lti.Dto.AdminLoginDto;
+
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -47,6 +51,23 @@ public class ControllerClass {
 		
 	}
 
+	@PostMapping("/adminLogin")
+	public Status adminLogin(@RequestBody AdminLoginDto loginDto) {
+		try {
+			Admin admin = userService.adminLogin(loginDto.getAdminId(), loginDto.getPassword());
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setMessage("Login Successful!");
+			loginStatus.setCustomerId(admin.getAdminId());
+			loginStatus.setCustomerFirstName(admin.getAdminFirstName());
+			loginStatus.setStatus(StatusType.SUCCESS);
+			return loginStatus;
+		} catch (CustomerServiceException e) {
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setMessage(e.getMessage());
+			loginStatus.setStatus(StatusType.FAILURE);
+			return loginStatus;
+		}
+	}
 	public boolean updateUser(Customer user) {
 		return userService.updateUser(user);
 	}
@@ -81,9 +102,7 @@ public class ControllerClass {
 		return userService.addLoanApplication(application);
 	}
 
-	public boolean adminLogin(int adminId, String adminPassword) {
-		return userService.adminLogin(adminId, adminPassword);
-	}
+	
 	
 	public Customer findAUSer(int userId) {
 		return userService.findAUser(userId);

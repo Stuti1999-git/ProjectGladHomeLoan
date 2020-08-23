@@ -23,8 +23,10 @@ public interface RepositoryInterface {
 	
 	//Admin
 	int registerAdmin(Admin admin);
+	public long adminLogin(int employeeId,String adminPassword);
+	public Admin findAdminById(int adminId);
+	public boolean isAdminPresent(int adminId);
 	
-	public boolean adminLogin(int employeeId,String adminPassword);
 	
 	public List<Customer> viewAllUsers();
 	

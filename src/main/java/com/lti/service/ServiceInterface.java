@@ -22,7 +22,7 @@ public interface ServiceInterface {
 		
 		//Admin
 		
-		public boolean adminLogin(int employeeId,String adminPassword);
+		public Admin adminLogin(int employeeId,String adminPassword);
 		
 		public List<Customer> viewAllUsers();
 		

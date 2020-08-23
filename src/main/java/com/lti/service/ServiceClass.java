@@ -49,8 +49,17 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
-	public boolean adminLogin(int adminId, String adminPassword) {
-		return repo.adminLogin(adminId, adminPassword);
+	public Admin adminLogin(int adminId, String adminPassword) {
+		try {
+			if (!repo.isAdminPresent(adminId))
+				throw new CustomerServiceException("Admin not Present in Database.");
+			int id = (int) repo.adminLogin(adminId, adminPassword);
+			Admin admin = repo.findAdminById(adminId);
+			return admin;
+		} catch (EmptyResultDataAccessException e) {
+			throw new CustomerServiceException("Incorrect username/password");
+
+		}
 	}
 
 	@Override
