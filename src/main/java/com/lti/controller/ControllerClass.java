@@ -55,15 +55,15 @@ public class ControllerClass {
 		try {
 			Admin admin = userService.adminLogin(loginDto.getAdminId(), loginDto.getPassword());
 			LoginStatus loginStatus = new LoginStatus();
-			loginStatus.setStatus(StatusType.SUCCESS);
 			loginStatus.setMessage("Login Successful!");
 			loginStatus.setCustomerId(admin.getAdminId());
 			loginStatus.setName(admin.getAdminFirstName());
+			loginStatus.setStatus(StatusType.SUCCESS);
 			return loginStatus;
 		} catch (CustomerServiceException e) {
 			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setMessage(e.getMessage());
 			loginStatus.setStatus(StatusType.FAILURE);
-			loginStatus.setMessage("Login Failed!");
 			return loginStatus;
 		}
 	}
