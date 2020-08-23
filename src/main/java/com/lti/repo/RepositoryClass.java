@@ -26,14 +26,27 @@ public class RepositoryClass implements RepositoryInterface {
 		Customer u = em.merge(user);
 		return u.getCustomerId();
 	}
+	
+	public boolean isCustomerPresent(int userId) {
+		return (Long)em.createQuery("select count(c.customerId) from Customer c where c.customerId =: id")
+				.setParameter("id", userId)
+				.getSingleResult() == 1 ? true : false;
+	}
+	
+	@Override
+	public Customer finById(int id) {
+		return em.find(Customer.class, id);
+	}
+
 
 	@Override
-	public boolean isValidUser(int userId, String userPassword) {
-		Customer user= em.find(Customer.class, userId);
-		if(user!=null && user.getCustomerPassword().equals(userPassword))
-			return true;
-		return false;
+	public int isValidUser(int userId, String userPassword) {
+		return (Integer) em.createQuery("select c.id from Customer c where c.customerId =: id and c.customerPassword =:psw")
+				.setParameter("id", userId)
+				.setParameter("psw", userPassword)
+				.getSingleResult();
 	}
+	
 
 	@Override
 	@Transactional

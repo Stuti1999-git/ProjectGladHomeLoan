@@ -12,7 +12,7 @@ public interface ServiceInterface {
 		//User
 		public int registerUser(Customer user);
 		
-		public boolean isValidUser(int userId,String userPassword);
+		public Customer isValidUser(int userId,String userPassword);
 		
 		public boolean updateUser(Customer user);
 		
