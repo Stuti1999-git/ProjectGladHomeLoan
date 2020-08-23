@@ -2,24 +2,29 @@ package com.lti.controller;
 
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import com.lti.Dto.LoginDto;
+
 import com.lti.Dto.AdminLoginDto;
-import com.lti.Dto.CustomerDto;
+
 import com.lti.exception.CustomerServiceException;
 import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
 import com.lti.service.ServiceInterface;
+import com.lti.status.AdminLoginStatus;
 import com.lti.status.LoginStatus;
 import com.lti.status.RegisterStatus;
 import com.lti.status.Status;
@@ -68,16 +73,16 @@ public class ControllerClass {
 	public Status adminLogin(@RequestBody AdminLoginDto loginDto) {
 		try {
 			Admin admin = userService.adminLogin(loginDto.getAdminId(), loginDto.getPassword());
-			LoginStatus loginStatus = new LoginStatus();
-			loginStatus.setStatus(StatusType.SUCCESS);
+			AdminLoginStatus loginStatus = new AdminLoginStatus();
 			loginStatus.setMessage("Login Successful!");
-			loginStatus.setCustomerId(admin.getAdminId());
-			loginStatus.setName(admin.getAdminFirstName());
+			loginStatus.setAdminId(admin.getAdminId());
+			loginStatus.setAdminName(admin.getAdminFirstName());
+			loginStatus.setStatus(StatusType.SUCCESS);
 			return loginStatus;
 		} catch (CustomerServiceException e) {
 			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setMessage(e.getMessage());
 			loginStatus.setStatus(StatusType.FAILURE);
-			loginStatus.setMessage("Login Failed!");
 			return loginStatus;
 		}
 	}
@@ -85,9 +90,30 @@ public class ControllerClass {
 		return userService.updateUser(user);
 	}
 
-	public boolean isValidUser(int userId, String userPassword) {
-		return userService.isValidUser(userId, userPassword);
+	@PostMapping("/loginUser")
+	public LoginStatus isValidUser(@RequestBody LoginDto loginDto) {
+		try {
+			Customer customer = userService.isValidUser(loginDto.getCustomerId(), loginDto.getCustomerPassword());
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setMessage("Login Successful");
+			loginStatus.setCustomerFirstName(customer.getCustomerFirstName());
+			loginStatus.setStatus(StatusType.SUCCESS);
+			loginStatus.setCustomerId(customer.getCustomerId());
+			return loginStatus;
+		}
+		catch (CustomerServiceException e) {
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setMessage(e.getMessage());
+			loginStatus.setStatus(StatusType.FAILURE);
+			
+			return loginStatus;
+		}
+		
+		
+		
 	}
+	
+	
 
 	public int addloanApplication(Application application) {
 

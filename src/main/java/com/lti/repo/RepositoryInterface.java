@@ -12,12 +12,13 @@ public interface RepositoryInterface {
 	//User
 	public int registerUser(Customer user);
 	
-	public boolean isValidUser(int userId,String userPassword);
+	public int isValidUser(int userId,String userPassword);
 	
 	public boolean updateUser(Customer user);
 	
 	public int addLoanApplication(Application application);
 	
+	public boolean isCustomerPresent(int userId);
 	
 	
 	//Admin
@@ -34,6 +35,8 @@ public interface RepositoryInterface {
 	public Customer findAUser(int userId);
 	
 	public boolean changeStatus(Application application); //Will pass full application from Admin side also with auto filled fields
+
+	Customer finById(int id);
 	
 	
 }

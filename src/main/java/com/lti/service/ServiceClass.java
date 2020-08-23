@@ -25,10 +25,19 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
-	public boolean isValidUser(int userId, String userPassword) {
-		return repo.isValidUser(userId, userPassword);
+	public Customer isValidUser(int userId, String userPassword) {
+		try {
+			if(!repo.isCustomerPresent(userId))
+				throw new CustomerServiceException("User not found");
+			
+			int id = repo.isValidUser(userId, userPassword);
+			Customer customer = repo.finById(id);
+			return customer;
+		}
+		catch(EmptyResultDataAccessException e) {
+			throw new CustomerServiceException("Incorrect credentials");
+		}
 	}
-
 	@Override
 	public boolean updateUser(Customer user) {
 		return repo.updateUser(user);
