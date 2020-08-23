@@ -18,6 +18,7 @@ import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
 import com.lti.service.ServiceInterface;
+import com.lti.status.AdminLoginStatus;
 import com.lti.status.LoginStatus;
 import com.lti.status.RegisterStatus;
 import com.lti.status.Status;
@@ -55,10 +56,15 @@ public class ControllerClass {
 	public Status adminLogin(@RequestBody AdminLoginDto loginDto) {
 		try {
 			Admin admin = userService.adminLogin(loginDto.getAdminId(), loginDto.getPassword());
-			LoginStatus loginStatus = new LoginStatus();
+			AdminLoginStatus loginStatus = new AdminLoginStatus();
 			loginStatus.setMessage("Login Successful!");
+<<<<<<< HEAD
 			loginStatus.setCustomerId(admin.getAdminId());
 			loginStatus.setCustomerFirstName(admin.getAdminFirstName());
+=======
+			loginStatus.setAdminId(admin.getAdminId());
+			loginStatus.setAdminName(admin.getAdminFirstName());
+>>>>>>> 8b7c0a6204b9a40f4cca90f282d90e61c5aec932
 			loginStatus.setStatus(StatusType.SUCCESS);
 			return loginStatus;
 		} catch (CustomerServiceException e) {
