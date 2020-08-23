@@ -3,9 +3,10 @@ package com.lti.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -39,8 +40,17 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
-	public boolean adminLogin(int adminId, String adminPassword) {
-		return repo.adminLogin(adminId, adminPassword);
+	public Admin adminLogin(int adminId, String adminPassword) {
+		try {
+			if (!repo.isAdminPresent(adminId))
+				throw new CustomerServiceException("Admin not Present in Database.");
+			int id = (int) repo.adminLogin(adminId, adminPassword);
+			Admin admin = repo.findAdminById(adminId);
+			return admin;
+		} catch (EmptyResultDataAccessException e) {
+			throw new CustomerServiceException("Incorrect username/password");
+
+		}
 	}
 
 	@Override

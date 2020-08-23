@@ -62,13 +62,26 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 	
 	@Override
-	public boolean adminLogin(int employeeId, String adminPassword) {
-		Admin admin= em.find(Admin.class, employeeId);
-		if(admin!=null && admin.getAdminPassword().equals(adminPassword))
-			return true;
-		return false;
+	public long adminLogin(int employeeId, String adminPassword) {
+		return   (Integer)em
+				.createQuery("select a.id from Admin a where a.adminId=:id and a.adminPassword=:pw")
+				.setParameter("id", employeeId)
+				.setParameter("pw", adminPassword)
+				.getSingleResult();
 	}
 
+	@Override
+	public boolean isAdminPresent(int adminId) {
+		return (Long)
+				em
+				.createQuery("select count(a.id) from Admin a where a.adminId=:id")
+				.setParameter("id", adminId)
+				.getSingleResult()== 1?true:false;
+	}
+	@Override
+	public Admin findAdminById(int adminId) {
+		return em.find(Admin.class, adminId);
+	}
 	@Override
 	public List<Customer> viewAllUsers() {
 		String sql = "select cust from Customer cust order by cust.customerId";

@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lti.Dto.AdminLoginDto;
 import com.lti.Dto.CustomerDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
 import com.lti.service.ServiceInterface;
+import com.lti.status.LoginStatus;
 import com.lti.status.RegisterStatus;
 import com.lti.status.Status;
 import com.lti.status.Status.StatusType;
@@ -48,6 +50,23 @@ public class ControllerClass {
 		
 	}
 
+	@PostMapping("/adminLogin")
+	public Status adminLogin(@RequestBody AdminLoginDto loginDto) {
+		try {
+			Admin admin = userService.adminLogin(loginDto.getAdminId(), loginDto.getPassword());
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setStatus(StatusType.SUCCESS);
+			loginStatus.setMessage("Login Successful!");
+			loginStatus.setCustomerId(admin.getAdminId());
+			loginStatus.setName(admin.getAdminFirstName());
+			return loginStatus;
+		} catch (CustomerServiceException e) {
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setStatus(StatusType.FAILURE);
+			loginStatus.setMessage("Login Failed!");
+			return loginStatus;
+		}
+	}
 	public boolean updateUser(Customer user) {
 		return userService.updateUser(user);
 	}
@@ -61,9 +80,7 @@ public class ControllerClass {
 		return userService.addLoanApplication(application);
 	}
 
-	public boolean adminLogin(int adminId, String adminPassword) {
-		return userService.adminLogin(adminId, adminPassword);
-	}
+	
 	
 	public Customer findAUSer(int userId) {
 		return userService.findAUser(userId);
