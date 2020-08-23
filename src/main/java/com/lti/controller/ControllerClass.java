@@ -58,13 +58,13 @@ public class ControllerClass {
 			Admin admin = userService.adminLogin(loginDto.getAdminId(), loginDto.getPassword());
 			AdminLoginStatus loginStatus = new AdminLoginStatus();
 			loginStatus.setMessage("Login Successful!");
-<<<<<<< HEAD
-			loginStatus.setCustomerId(admin.getAdminId());
-			loginStatus.setCustomerFirstName(admin.getAdminFirstName());
-=======
+
 			loginStatus.setAdminId(admin.getAdminId());
 			loginStatus.setAdminName(admin.getAdminFirstName());
->>>>>>> 8b7c0a6204b9a40f4cca90f282d90e61c5aec932
+
+			loginStatus.setAdminId(admin.getAdminId());
+			loginStatus.setAdminName(admin.getAdminFirstName());
+
 			loginStatus.setStatus(StatusType.SUCCESS);
 			return loginStatus;
 		} catch (CustomerServiceException e) {
