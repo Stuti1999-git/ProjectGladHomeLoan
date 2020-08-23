@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lti.Dto.AdminLoginDto;
 import com.lti.Dto.CustomerDto;
 import com.lti.exception.CustomerServiceException;
+import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -29,14 +32,25 @@ public class ControllerClass {
 
 	@Autowired
 	ServiceInterface userService;
+	
+	@Autowired
+	private MailSender mailSender;
 
 	@PostMapping("/registerUser")
 	public Status addUser(@RequestBody Customer user) {
 		try {
+			Customer customer = new Customer();
+			customer = user;
 			RegisterStatus status = new RegisterStatus();
 			status.setCustomerId(userService.registerUser(user));
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration successful");
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setFrom("abhishek.sethi@lntinfotech.com");
+			message.setTo(customer.getCustomerEmail());
+			message.setSubject("Thank You for registering with Bank Of LTI");
+			message.setText("Your Customer ID is : "+status.getCustomerId());
+			mailSender.send(message);
 			return status;
 			
 		}
