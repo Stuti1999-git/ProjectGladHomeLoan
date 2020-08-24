@@ -60,9 +60,17 @@ public class ServiceClass implements ServiceInterface {
 
 	@Override
 	public boolean updateAdmin(Admin admin) {
-		return repo.updateAdmin(admin);
+		if(repo.isAdminPresent(admin.getAdminId()))
+			return repo.updateAdmin(admin);
+		
+	return false;
 	}
 
+	@Override
+	public Admin findAAdminById(int adminId) {
+		return repo.findAdminById(adminId);
+	}
+	
 	@Override
 	public Customer findAUser(int userId) {
 		return repo.findAUser(userId);

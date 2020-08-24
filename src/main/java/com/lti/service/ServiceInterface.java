@@ -2,6 +2,7 @@ package com.lti.service;
 
 import java.util.List;
 
+import com.lti.Dto.UpdateAdminDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -29,4 +30,6 @@ public interface ServiceInterface {
 		public boolean updateAdmin(Admin admin);
 		
 		public Customer findAUser(int userId);
+		
+		public Admin findAAdminById(int adminId);
 }
