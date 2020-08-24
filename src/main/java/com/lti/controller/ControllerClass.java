@@ -3,17 +3,22 @@ package com.lti.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.stereotype.Controller;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.lti.Dto.LoginDto;
 
 import com.lti.Dto.AdminLoginDto;
 
 import com.lti.exception.CustomerServiceException;
+import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -24,7 +29,6 @@ import com.lti.status.RegisterStatus;
 import com.lti.status.Status;
 import com.lti.status.Status.StatusType;
 
-
 @RestController
 @CrossOrigin
 public class ControllerClass {
@@ -32,24 +36,34 @@ public class ControllerClass {
 	@Autowired
 	ServiceInterface userService;
 
+	@Autowired
+	private MailSender mailSender;
+
 	@PostMapping("/registerUser")
 	public Status addUser(@RequestBody Customer user) {
 		try {
+			Customer customer = new Customer();
+			customer = user;
 			RegisterStatus status = new RegisterStatus();
 			status.setCustomerId(userService.registerUser(user));
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration successful");
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setFrom("abhishek.sethi@lntinfotech.com");
+			message.setTo(customer.getCustomerEmail());
+			message.setSubject("Thank You for registering with Bank Of LTI");
+			message.setText("Your Customer ID is : " + status.getCustomerId());
+			mailSender.send(message);
 			return status;
-			
-		}
-		catch (CustomerServiceException e) {
+
+		} catch (CustomerServiceException e) {
 			Status status = new Status();
 			status.setStatus(StatusType.FAILURE);
 			status.setMessage(e.getMessage());
 			return status;
-			
+
 		}
-		
+
 	}
 
 	@PostMapping("/adminLogin")
@@ -58,13 +72,8 @@ public class ControllerClass {
 			Admin admin = userService.adminLogin(loginDto.getAdminId(), loginDto.getPassword());
 			AdminLoginStatus loginStatus = new AdminLoginStatus();
 			loginStatus.setMessage("Login Successful!");
-
 			loginStatus.setAdminId(admin.getAdminId());
 			loginStatus.setAdminName(admin.getAdminFirstName());
-
-			loginStatus.setAdminId(admin.getAdminId());
-			loginStatus.setAdminName(admin.getAdminFirstName());
-
 			loginStatus.setStatus(StatusType.SUCCESS);
 			return loginStatus;
 		} catch (CustomerServiceException e) {
@@ -74,7 +83,10 @@ public class ControllerClass {
 			return loginStatus;
 		}
 	}
-	public boolean updateUser(Customer user) {
+
+	@PostMapping("/updateUser")
+	public boolean updateUser(@RequestBody Customer user) {
+		System.out.println(user.getCustomerId());
 		return userService.updateUser(user);
 	}
 
@@ -85,43 +97,38 @@ public class ControllerClass {
 			LoginStatus loginStatus = new LoginStatus();
 			loginStatus.setMessage("Login Successful");
 			loginStatus.setCustomerFirstName(customer.getCustomerFirstName());
+			loginStatus.setCustomerLastName(customer.getCustomerLastName());
+			loginStatus.setCustomerEmail(customer.getCustomerEmail());
 			loginStatus.setStatus(StatusType.SUCCESS);
 			loginStatus.setCustomerId(customer.getCustomerId());
 			return loginStatus;
-		}
-		catch (CustomerServiceException e) {
+		} catch (CustomerServiceException e) {
 			LoginStatus loginStatus = new LoginStatus();
 			loginStatus.setMessage(e.getMessage());
 			loginStatus.setStatus(StatusType.FAILURE);
-			
+
 			return loginStatus;
 		}
-		
-		
-		
+
 	}
-	
-	
 
 	public int addloanApplication(Application application) {
 
 		return userService.addLoanApplication(application);
 	}
 
-	
-	
-	public Customer findAUSer(int userId) {
+	@PostMapping("/findAUser")
+	public Customer findAUSer(@RequestBody Integer userId) {
 		return userService.findAUser(userId);
 	}
 
 	public List<Customer> viewAllUsers() {
 		return userService.viewAllUsers();
 	}
-	
+
 	public boolean updateAdmin(Admin admin) {
-		
+
 		return userService.updateAdmin(admin);
 	}
-	
 
 }

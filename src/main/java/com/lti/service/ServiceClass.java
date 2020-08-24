@@ -21,23 +21,27 @@ public class ServiceClass implements ServiceInterface {
 
 	@Override
 	public int registerUser(Customer user) {
+
+		if (repo.doesEmailExist(user.getCustomerEmail()))
+			throw new CustomerServiceException("Email already exists");
+
 		return repo.registerUser(user);
 	}
 
 	@Override
 	public Customer isValidUser(int userId, String userPassword) {
 		try {
-			if(!repo.isCustomerPresent(userId))
+			if (!repo.isCustomerPresent(userId))
 				throw new CustomerServiceException("User not found");
-			
+
 			int id = repo.isValidUser(userId, userPassword);
 			Customer customer = repo.finById(id);
 			return customer;
-		}
-		catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			throw new CustomerServiceException("Incorrect credentials");
 		}
 	}
+
 	@Override
 	public boolean updateUser(Customer user) {
 		return repo.updateUser(user);

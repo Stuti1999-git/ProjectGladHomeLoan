@@ -2,6 +2,7 @@ package com.lti.repo;
 
 import java.util.List;
 
+import com.lti.Dto.UpdateUserDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -36,7 +37,15 @@ public interface RepositoryInterface {
 	
 	public boolean changeStatus(Application application); //Will pass full application from Admin side also with auto filled fields
 
-	Customer finById(int id);
+	public Customer finById(int id);
+	
+	
+
+	public boolean doesEmailExist(String customerEmail);
+
+	//boolean updateUser(UpdateUserDto user);
+
+	//public Customer findByEmail(String email);
 	
 	
 }
