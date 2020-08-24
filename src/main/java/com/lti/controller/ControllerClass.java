@@ -9,6 +9,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,9 +65,7 @@ public class ControllerClass {
 			status.setStatus(StatusType.FAILURE);
 			status.setMessage(e.getMessage());
 			return status;
-			
 		}
-		
 	}
 
 	@PostMapping("/adminLogin")
@@ -135,5 +134,9 @@ public class ControllerClass {
 		return userService.updateAdmin(admin);
 	}
 	
+	@GetMapping("/viewAllApplications")
+	public List<Application> viewAllApplications() {
+		return userService.viewAllApplications();
+	}
 
 }

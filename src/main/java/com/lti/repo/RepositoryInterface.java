@@ -30,6 +30,8 @@ public interface RepositoryInterface {
 	
 	public List<Customer> viewAllUsers();
 	
+	public List<Application> viewAllApplications();
+	
 	public boolean updateAdmin(Admin admin);
 	
 	public Customer findAUser(int userId);

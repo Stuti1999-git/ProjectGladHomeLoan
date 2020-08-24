@@ -77,4 +77,9 @@ public class ServiceClass implements ServiceInterface {
 		return repo.findAUser(userId);
 	}
 
+	@Override
+	public List<Application> viewAllApplications() {
+		return repo.viewAllApplications();
+	}
+
 }
