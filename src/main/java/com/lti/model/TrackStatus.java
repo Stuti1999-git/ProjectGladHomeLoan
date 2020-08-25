@@ -7,16 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-@Entity
+//@Entity
 public class TrackStatus {
 
-	@OneToOne
-	@JoinColumn(name = "application_id")
-	private Application applicationStatus;
-
-	@Id
-	private String loanStatus;
-	
-	@Column
-	private LocalDate appointmentDate;
+//	@OneToOne
+//	@JoinColumn(name = "application_id")
+//	private Application applicationStatus;
+//
+//	@Id
+//	private String loanStatus="Pending";
+//	
+//	@Column
+//	private LocalDate appointmentDate;
 }

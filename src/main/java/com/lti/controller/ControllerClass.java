@@ -1,16 +1,16 @@
 package com.lti.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.lti.Dto.AdminLoginDto;
-import com.lti.Dto.UpdateAdminDto;
+import com.lti.Dto.LoginDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -29,13 +29,24 @@ public class ControllerClass {
 	@Autowired
 	ServiceInterface userService;
 
+	@Autowired
+	private MailSender mailSender;
+
 	@PostMapping("/registerUser")
 	public Status addUser(@RequestBody Customer user) {
 		try {
+			Customer customer = new Customer();
+			customer = user;
 			RegisterStatus status = new RegisterStatus();
 			status.setCustomerId(userService.registerUser(user));
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration successful");
+			SimpleMailMessage message = new SimpleMailMessage();
+			message.setFrom("abhishek.sethi@lntinfotech.com");
+			message.setTo(customer.getCustomerEmail());
+			message.setSubject("Thank You for registering with Bank Of LTI");
+			message.setText("Your Customer ID is : " + status.getCustomerId());
+			mailSender.send(message);
 			return status;
 
 		} catch (CustomerServiceException e) {
@@ -43,9 +54,7 @@ public class ControllerClass {
 			status.setStatus(StatusType.FAILURE);
 			status.setMessage(e.getMessage());
 			return status;
-
 		}
-
 	}
 
 	@PostMapping("/adminLogin")
@@ -70,9 +79,23 @@ public class ControllerClass {
 		return userService.updateUser(user);
 	}
 
+	@PostMapping("/loginUser")
+	public LoginStatus isValidUser(@RequestBody LoginDto loginDto) {
+		try {
+			Customer customer = userService.isValidUser(loginDto.getCustomerId(), loginDto.getCustomerPassword());
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setMessage("Login Successful");
+			loginStatus.setCustomerFirstName(customer.getCustomerFirstName());
+			loginStatus.setStatus(StatusType.SUCCESS);
+			loginStatus.setCustomerId(customer.getCustomerId());
+			return loginStatus;
+		} catch (CustomerServiceException e) {
+			LoginStatus loginStatus = new LoginStatus();
+			loginStatus.setMessage(e.getMessage());
+			loginStatus.setStatus(StatusType.FAILURE);
 
-	public boolean isValidUser(int userId, String userPassword) {
-		return userService.isValidUser(userId, userPassword);
+			return loginStatus;
+		}
 	}
 
 	public int addloanApplication(Application application) {
@@ -88,8 +111,19 @@ public class ControllerClass {
 	public Admin findAAdminById(@RequestBody Integer adminId) {
 		return userService.findAAdminById(adminId);
 	}
+
+	@GetMapping("/viewAllCustomers")
 	public List<Customer> viewAllUsers() {
 		return userService.viewAllUsers();
 	}
 
+	public boolean updateAdmin(Admin admin) {
+
+		return userService.updateAdmin(admin);
+	}
+
+	@GetMapping("/viewAllApplications")
+	public List<Application> viewAllApplications() {
+		return userService.viewAllApplications();
+	}
 }

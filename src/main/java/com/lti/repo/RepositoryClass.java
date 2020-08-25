@@ -27,12 +27,21 @@ public class RepositoryClass implements RepositoryInterface {
 		return u.getCustomerId();
 	}
 
+	public boolean isCustomerPresent(int userId) {
+		return (Long) em.createQuery("select count(c.customerId) from Customer c where c.customerId =: id")
+				.setParameter("id", userId).getSingleResult() == 1 ? true : false;
+	}
+
 	@Override
-	public boolean isValidUser(int userId, String userPassword) {
-		Customer user = em.find(Customer.class, userId);
-		if (user != null && user.getCustomerPassword().equals(userPassword))
-			return true;
-		return false;
+	public Customer finById(int id) {
+		return em.find(Customer.class, id);
+	}
+
+	@Override
+	public int isValidUser(int userId, String userPassword) {
+		return (Integer) em
+				.createQuery("select c.id from Customer c where c.customerId =: id and c.customerPassword =:psw")
+				.setParameter("id", userId).setParameter("psw", userPassword).getSingleResult();
 	}
 
 	@Override
@@ -87,8 +96,8 @@ public class RepositoryClass implements RepositoryInterface {
 
 	@Override
 	@Transactional
-	public boolean updateAdmin(Admin admin){
-		Admin ad=em.find(Admin.class, admin.getAdminId());
+	public boolean updateAdmin(Admin admin) {
+		Admin ad = em.find(Admin.class, admin.getAdminId());
 		if (ad != null) {
 			em.merge(ad);
 			return true;
@@ -96,7 +105,6 @@ public class RepositoryClass implements RepositoryInterface {
 		return false;
 	}
 
-	
 	@Override
 	public Customer findAUser(int customerId) {
 		Customer user = em.find(Customer.class, customerId);
@@ -114,4 +122,11 @@ public class RepositoryClass implements RepositoryInterface {
 		return false;
 	}
 
+	@Override
+	public List<Application> viewAllApplications() {
+		String sql = "select app from Application app order by app.applicationId";
+		Query qry = em.createQuery(sql);
+		List<Application> application = qry.getResultList();
+		return application;
+	}
 }
