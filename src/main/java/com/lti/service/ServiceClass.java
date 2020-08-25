@@ -82,4 +82,14 @@ public class ServiceClass implements ServiceInterface {
 		return repo.viewAllApplications();
 	}
 
+	@Override
+	public boolean changeStatus(Application application) {
+		return repo.changeStatus(application);
+	}
+
+	@Override
+	public Application findByApplicationId(int id) {
+		return repo.findByApplicationId(id);
+	}
+
 }

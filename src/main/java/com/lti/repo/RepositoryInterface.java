@@ -40,5 +40,7 @@ public interface RepositoryInterface {
 
 	Customer finById(int id);
 	
+	Application findByApplicationId(int id);
+	
 	
 }

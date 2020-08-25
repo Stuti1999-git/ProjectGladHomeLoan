@@ -30,4 +30,6 @@ public interface ServiceInterface {
 		
 		public Customer findAUser(int userId);
 		public List<Application> viewAllApplications();
+		public boolean changeStatus(Application application);
+		public Application findByApplicationId(int id);
 }

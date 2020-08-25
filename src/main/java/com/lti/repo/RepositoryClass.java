@@ -141,4 +141,10 @@ public class RepositoryClass implements RepositoryInterface {
 		return application;
 	}
 
+	@Override
+	public Application findByApplicationId(int id) {
+		Application app = em.find(Application.class, id);
+		return app;
+	}
+
 }
