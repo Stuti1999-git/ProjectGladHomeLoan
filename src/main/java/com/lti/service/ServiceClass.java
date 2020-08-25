@@ -49,6 +49,28 @@ public class ServiceClass implements ServiceInterface {
 
 	@Override
 	public int addLoanApplication(Application application) {
+		if (application.getNoOfDependents() > 0) {
+			if (application.getExistingLoan() == "YES") {
+				application.setMaxLoanAmount(application.getIncome() - application.getDepandentMonthlyExpenses()
+				- application.getEmiExistingLoan() - application.getPersonlExpenses());
+			}
+			else {
+				application.setMaxLoanAmount(application.getIncome() - application.getDepandentMonthlyExpenses()
+						 - application.getPersonlExpenses());
+			}
+		}
+			else {
+				if (application.getExistingLoan() == "YES") {
+					application.setMaxLoanAmount(application.getIncome() 
+					- application.getEmiExistingLoan() - application.getPersonlExpenses());
+				}
+				else {
+					application.setMaxLoanAmount(application.getIncome() 
+							 - application.getPersonlExpenses());
+				}
+				
+			}
+		
 		return repo.addLoanApplication(application);
 	}
 
@@ -79,6 +101,11 @@ public class ServiceClass implements ServiceInterface {
 	@Override
 	public Customer findAUser(int userId) {
 		return repo.findAUser(userId);
+	}
+
+	@Override
+	public List<Application> viewAllApplications() {
+		return repo.viewAllApplications();
 	}
 
 }

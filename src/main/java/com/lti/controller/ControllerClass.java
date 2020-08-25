@@ -1,24 +1,22 @@
 package com.lti.controller;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Controller;
-
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lti.Dto.LoginDto;
-
 import com.lti.Dto.AdminLoginDto;
-
+import com.lti.Dto.LoginDto;
 import com.lti.exception.CustomerServiceException;
-import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -61,7 +59,6 @@ public class ControllerClass {
 			status.setStatus(StatusType.FAILURE);
 			status.setMessage(e.getMessage());
 			return status;
-
 		}
 
 	}
@@ -112,10 +109,14 @@ public class ControllerClass {
 
 	}
 
+	@PostMapping("/applyLoan")
 	public int addloanApplication(Application application) {
-
+		
 		return userService.addLoanApplication(application);
 	}
+	
+	
+	
 
 	@PostMapping("/findAUser")
 	public Customer findAUSer(@RequestBody Integer userId) {
@@ -130,5 +131,12 @@ public class ControllerClass {
 
 		return userService.updateAdmin(admin);
 	}
+
+	
+	@GetMapping("/viewAllApplications")
+	public List<Application> viewAllApplications() {
+		return userService.viewAllApplications();
+	}
+
 
 }

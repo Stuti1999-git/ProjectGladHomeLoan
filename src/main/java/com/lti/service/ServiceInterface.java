@@ -29,4 +29,5 @@ public interface ServiceInterface {
 		public boolean updateAdmin(Admin admin);
 		
 		public Customer findAUser(int userId);
+		public List<Application> viewAllApplications();
 }

@@ -22,7 +22,7 @@ public class Application {
 	private int applicationId;
 
 	@ManyToOne
-	@JoinColumn(name = "customer_id")
+	@JoinColumn(name = "customer_id")//@JsonIgnore
 	private Customer customer;
 
 	@Column
@@ -79,14 +79,17 @@ public class Application {
 	@Column
 	private double maxLoanAmount; //read only field based on above parameters and will be calculated on front end
 	
+	@Column
+	private String loanStatus="Pending";
+	
+	@Column
+	private LocalDate appointmentDate=LocalDate.now().plusDays(7);
+	
 	@OneToOne(mappedBy = "application",cascade = CascadeType.ALL)
 	private Property property;
 	
 	@OneToOne(mappedBy = "applicationDocument",cascade = CascadeType.ALL)
 	private Documents document;
-	
-	@OneToOne(mappedBy = "applicationStatus",cascade = CascadeType.ALL)
-	private TrackStatus status;
 	
 	@OneToOne(mappedBy = "applicationLoan",cascade = CascadeType.ALL)
 	private Loan loan;
@@ -147,15 +150,25 @@ public class Application {
 		this.maxLoanAmount = maxLoanAmount;
 	}
 
-	public TrackStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(TrackStatus status) {
-		this.status = status;
-	}
+	
 
 	
+
+	public String getLoanStatus() {
+		return loanStatus;
+	}
+
+	public void setLoanStatus(String loanStatus) {
+		this.loanStatus = loanStatus;
+	}
+
+	public LocalDate getAppointmentDate() {
+		return appointmentDate;
+	}
+
+	public void setAppointmentDate(LocalDate appointmentDate) {
+		this.appointmentDate = appointmentDate;
+	}
 
 	public int getApplicationId() {
 		return applicationId;

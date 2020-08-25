@@ -150,5 +150,12 @@ public class RepositoryClass implements RepositoryInterface {
 	
 	
 	
+	@Override
+	public List<Application> viewAllApplications(){
+		String sql = "select app from Application app order by app.applicationId";
+		Query qry = em.createQuery(sql);
+		List<Application> application = qry.getResultList();
+		return application;
+	}
 
 }
