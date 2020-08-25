@@ -136,4 +136,24 @@ public class ControllerClass {
 	public List<Application> viewAllApplications() {
 		return userService.viewAllApplications();
 	}
+
+	@PostMapping("/changeStatus")
+	public Status changeStatus(Application application) {
+		Status status = new Status();
+		if(userService.changeStatus(application)) {
+			status.setMessage("Updated Successfully");
+			status.setStatus(StatusType.SUCCESS);
+			return status;
+		}
+		else {
+			status.setMessage("Not Updated");
+			status.setStatus(StatusType.FAILURE);
+			return status;
+		}
+	}
+
+	@PostMapping("/viewApplication")
+	public Application findByApplicationId(@RequestBody Integer id) {
+		return userService.findByApplicationId(id);
+	}
 }

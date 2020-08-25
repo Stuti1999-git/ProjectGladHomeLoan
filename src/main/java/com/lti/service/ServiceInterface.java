@@ -25,11 +25,15 @@ public interface ServiceInterface {
 
 	public List<Customer> viewAllUsers();
 
+	public Admin findAAdminById(int adminId);
+
 	public boolean updateAdmin(Admin admin);
 
 	public Customer findAUser(int userId);
 
-	public Admin findAAdminById(int adminId);
-
 	public List<Application> viewAllApplications();
+
+	public boolean changeStatus(Application application);
+
+	public Application findByApplicationId(int id);
 }

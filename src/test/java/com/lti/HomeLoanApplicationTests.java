@@ -76,6 +76,12 @@ class HomeLoanApplicationTests {
 //		application.setTenure(10);
 //		application.setUserPAN("ABCD1234");
 		
+		application.setMaritialStatus("UnMarried");
+		application.setNoOfDependents(3);
+		application.setDepandentMonthlyExpenses(6600);
+		application.setPersonlExpenses(5000);
+		application.setExistingLoan("NO");
+
 		application.setMaritialStatus("Married");
 		application.setNoOfDependents(1);
 		application.setDepandentMonthlyExpenses(100000);
@@ -84,16 +90,16 @@ class HomeLoanApplicationTests {
 		application.setEmiExistingLoan(2345);
 		application.setMaxLoanAmount(234);
 		application.setGender("Male");
-		application.setAddress("sdfg");
-		application.setUserPAN("vbnm");
-		application.setAadharNumber("sdfghj");
+		application.setAddress("ABC");
+		application.setUserPAN("BANPS");
+		application.setAadharNumber("12345");
 		application.setNationality("Indian");
-		application.setRetirementAge(60);
-		application.setOrganisation("vbnm");
-		application.setIncome(12345);
-		application.setLoanAmount(5671234);
+		application.setRetirementAge(55);
+		application.setOrganisation("LTI");
+		application.setIncome(36000);
+		application.setLoanAmount(1500000);
 		application.setTenure(12);
-		application.setDownPayment(123);
+		application.setDownPayment(20000);
 		
 		
 		
@@ -102,6 +108,15 @@ class HomeLoanApplicationTests {
 		
 		
 		
+	}
+	
+	@Test
+	void changeStatus() {
+		Application application = new Application();
+		application.setApplicationId(20262);
+		application.setMaritialStatus("Married");
+		application.setDownPayment(350000);
+		System.out.println(repo.changeStatus(application));
 	}
 	
 	@Test

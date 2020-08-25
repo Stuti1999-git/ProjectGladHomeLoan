@@ -49,5 +49,7 @@ public interface RepositoryInterface {
 
 	//public Customer findByEmail(String email);
 	
+	Application findByApplicationId(int id);
+	
 	
 }
