@@ -24,13 +24,13 @@ class HomeLoanApplicationTests {
 	void registerCustomer() {
 		
 		Customer customer = new Customer();
-		customer.setCustomerCity("Mohali");
+		customer.setCustomerCity("chd");
 		customer.setCustomerdateOfBirth(LocalDate.of(1999, 07, 17));
-		customer.setCustomerEmail("stuti@lti");
+		customer.setCustomerEmail("stutigupta177@lti");
 		customer.setCustomerEmploymentType("Salaried");
-		customer.setCustomerFirstName("Stuti");
+		customer.setCustomerFirstName("Frooti");
 		customer.setCustomerLastName("Gupta");
-		customer.setCustomerMobileNumber("9876543210");
+		customer.setCustomerMobileNumber("9676543210");
 		customer.setCustomerPassword("Stuti@123");
 		
 		repo.registerUser(customer);
@@ -81,6 +81,14 @@ class HomeLoanApplicationTests {
 		application.setDepandentMonthlyExpenses(6600);
 		application.setPersonlExpenses(5000);
 		application.setExistingLoan("NO");
+
+		application.setMaritialStatus("Married");
+		application.setNoOfDependents(1);
+		application.setDepandentMonthlyExpenses(100000);
+		application.setPersonlExpenses(100000);
+		application.setExistingLoan("YES");
+		application.setEmiExistingLoan(2345);
+		application.setMaxLoanAmount(234);
 		application.setGender("Male");
 		application.setAddress("ABC");
 		application.setUserPAN("BANPS");
