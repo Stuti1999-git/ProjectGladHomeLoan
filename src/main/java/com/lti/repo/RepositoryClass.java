@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import com.lti.Dto.UpdateAdminDto;
+import com.lti.Dto.UpdateUserDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -32,6 +33,11 @@ public class RepositoryClass implements RepositoryInterface {
 				.setParameter("id", userId).getSingleResult() == 1 ? true : false;
 	}
 
+	public boolean doesEmailExist(String email) {
+		return (Long) em.createQuery("select count(c.customerEmail) from Customer c where c.customerEmail =: eml")
+				.setParameter("eml", email).getSingleResult() == 1 ? true : false;
+	}
+
 	@Override
 	public Customer finById(int id) {
 		return em.find(Customer.class, id);
@@ -47,9 +53,13 @@ public class RepositoryClass implements RepositoryInterface {
 	@Override
 	@Transactional
 	public boolean updateUser(Customer user) {
+		System.out.println(user.getCustomerId());
 		Customer u = em.find(Customer.class, user.getCustomerId());
+
 		if (u != null) {
+
 			em.merge(user);
+			System.out.println(user);
 			return true;
 		}
 		return false;
@@ -108,6 +118,7 @@ public class RepositoryClass implements RepositoryInterface {
 	@Override
 	public Customer findAUser(int customerId) {
 		Customer user = em.find(Customer.class, customerId);
+		System.out.println(user);
 		return user;
 	}
 
