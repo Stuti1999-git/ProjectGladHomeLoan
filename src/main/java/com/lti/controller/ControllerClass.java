@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.lti.Dto.AdminLoginDto;
+import com.lti.Dto.ApplicationDto;
 import com.lti.Dto.LoginDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
@@ -107,8 +108,8 @@ public class ControllerClass {
 	}
 
 	@PostMapping("/applyLoan")
-	public int addloanApplication(Application application) {
-
+	public int addloanApplication(@RequestBody Application application) {
+		//System.out.println(application);
 		return userService.addLoanApplication(application);
 	}
 

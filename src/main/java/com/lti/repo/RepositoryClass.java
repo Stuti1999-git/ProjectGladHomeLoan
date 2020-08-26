@@ -27,12 +27,13 @@ public class RepositoryClass implements RepositoryInterface {
 		Customer u = em.merge(user);
 		return u.getCustomerId();
 	}
-
+	@Override
 	public boolean isCustomerPresent(int userId) {
 		return (Long) em.createQuery("select count(c.customerId) from Customer c where c.customerId =: id")
 				.setParameter("id", userId).getSingleResult() == 1 ? true : false;
 	}
 
+	@Override
 	public boolean doesEmailExist(String email) {
 		return (Long) em.createQuery("select count(c.customerEmail) from Customer c where c.customerEmail =: eml")
 				.setParameter("eml", email).getSingleResult() == 1 ? true : false;
@@ -68,6 +69,7 @@ public class RepositoryClass implements RepositoryInterface {
 	@Override
 	@Transactional
 	public int addLoanApplication(Application application) {
+		System.out.println(application);
 		Application u = em.merge(application);
 		return u.getApplicationId();
 	}
@@ -126,6 +128,7 @@ public class RepositoryClass implements RepositoryInterface {
 	@Transactional
 	public boolean changeStatus(Application application) { // update status in database
 		Application app = em.find(Application.class, application.getApplicationId());
+		
 		if (app != null) {
 			em.merge(application);
 			return true;
@@ -137,6 +140,7 @@ public class RepositoryClass implements RepositoryInterface {
 	public List<Application> viewAllApplications() {
 		String sql = "select app from Application app order by app.applicationId";
 		Query qry = em.createQuery(sql);
+		
 		List<Application> application = qry.getResultList();
 		return application;
 	}

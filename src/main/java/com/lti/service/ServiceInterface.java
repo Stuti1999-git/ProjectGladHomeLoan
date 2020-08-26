@@ -2,6 +2,7 @@ package com.lti.service;
 
 import java.util.List;
 
+import com.lti.Dto.ApplicationDto;
 import com.lti.Dto.UpdateAdminDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -17,7 +18,7 @@ public interface ServiceInterface {
 
 	public boolean updateUser(Customer user);
 
-	public int addLoanApplication(Application loan);
+	public int addLoanApplication(Application application);
 
 	// Admin
 
