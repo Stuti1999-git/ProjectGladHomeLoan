@@ -32,6 +32,8 @@ public interface ServiceInterface {
 
 	public Customer findAUser(int userId);
 
+	public Customer findByEmail(String email);
+
 	public List<Application> viewAllApplications();
 
 	public boolean changeStatus(Application application);

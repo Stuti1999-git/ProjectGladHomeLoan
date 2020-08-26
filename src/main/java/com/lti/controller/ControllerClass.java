@@ -2,7 +2,10 @@ package com.lti.controller;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.Dto.AdminLoginDto;
 import com.lti.Dto.DocumentDto;
+import com.lti.Dto.ForgotPasswordDto;
 import com.lti.Dto.LoginDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
@@ -23,6 +27,7 @@ import com.lti.model.Application;
 import com.lti.model.Customer;
 import com.lti.service.ServiceInterface;
 import com.lti.status.AdminLoginStatus;
+import com.lti.status.CustomerStatus;
 import com.lti.status.LoginStatus;
 import com.lti.status.RegisterStatus;
 import com.lti.status.Status;
@@ -64,7 +69,55 @@ public class ControllerClass {
 
 	}
 
+//	public Status forgotPassword(@RequestBody ForgotPasswordDto forgotPassDto) {
+//		try {
+//	CustomerStatus status=new CustomerStatus();
+//		Customer customer=userService.findByEmail(forgotPassDto.getEmail());
+//		
+//		
+//	if(customer!=null) {
+//	status.setStatus(StatusType.SUCCESS);
+//	status.setMessage("Check Your Email for Password Reset.");
+//	SimpleMailMessage message = new SimpleMailMessage();
+//	message.setFrom("abhishek.sethi@lntinfotech.com");
+//	message.setTo(customer.getCustomerEmail());
+//	message.setSubject("Forgot Password");
+//	message.setText("To complete the password reset process, use the token generated to"
+//			+ " reset the password: " + status.setToken(UUID.randomUUID().toString());
+//	mailSender.send(message);
+//		return status;
+//		}}catch (CustomerServiceException e) {
+//			Status status = new Status();
+//			status.setStatus(StatusType.FAILURE);
+//			status.setMessage(e.getMessage());
+//			return status;
+//		}
+//		
+//	}
 
+//	// Receive the address and send an email
+//    @RequestMapping(value="/forgot-password", method=RequestMethod.POST)
+//    public ModelAndView forgotUserPassword(ModelAndView modelAndView, User user) {
+//        Customer existingUser = userRepository.findByEmailIdIgnoreCase(user.getEmailId());
+//        if (existingUser != null) {
+//            SimpleMailMessage mailMessage = new SimpleMailMessage();
+//            mailMessage.setTo(existingUser.getEmailId());
+//            mailMessage.setSubject("Complete Password Reset!");
+//            mailMessage.setFrom("test-email@gmail.com");
+//            mailMessage.setText("To complete the password reset process, please click here: "
+//              + "http://localhost:8082/confirm-reset?token="+confirmationToken.getConfirmationToken());
+//
+//            // Send the email
+//            emailSenderService.sendEmail(mailMessage);
+//
+//            modelAndView.addObject("message", "Request to reset password received. Check your inbox for the reset link.");
+//            modelAndView.setViewName("successForgotPassword");
+//
+//        } else {
+//            modelAndView.addObject("message", "This email address does not exist!");
+//            modelAndView.setViewName("error");
+//        }
+//        return modelAndView;
 	@PostMapping("/adminLogin")
 	public Status adminLogin(@RequestBody AdminLoginDto loginDto) {
 		try {

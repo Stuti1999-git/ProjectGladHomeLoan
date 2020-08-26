@@ -46,10 +46,19 @@ public class Customer {
 
 	@Column
 	private LocalDate customerdateOfBirth;
-
 	@JsonIgnore
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<Application> application;
+
+	private String resetToken;
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.resetToken = resetToken;
+	}
 
 	public int getCustomerId() {
 		return customerId;
@@ -139,8 +148,5 @@ public class Customer {
 				+ ", customerEmploymentType=" + customerEmploymentType + ", customerdateOfBirth=" + customerdateOfBirth
 				+ "]";
 	}
-
-	
-	
 
 }

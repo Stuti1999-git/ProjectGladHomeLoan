@@ -1,6 +1,6 @@
 package com.lti.Dto;
 
-public class ForgotPassword {
+public class ForgotPasswordDto {
 
 	private String email;
 
