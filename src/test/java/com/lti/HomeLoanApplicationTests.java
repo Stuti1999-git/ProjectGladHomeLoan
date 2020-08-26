@@ -79,13 +79,13 @@ class HomeLoanApplicationTests {
 		application.setMaritialStatus("UnMarried");
 		application.setNoOfDependents(3);
 		application.setDepandentMonthlyExpenses(6600);
-		application.setPersonlExpenses(5000);
+		application.setPersonalExpenses(5000);
 		application.setExistingLoan("NO");
 
 		application.setMaritialStatus("Married");
 		application.setNoOfDependents(1);
 		application.setDepandentMonthlyExpenses(100000);
-		application.setPersonlExpenses(100000);
+		application.setPersonalExpenses(100000);
 		application.setExistingLoan("YES");
 		application.setEmiExistingLoan(2345);
 		application.setMaxLoanAmount(234);
