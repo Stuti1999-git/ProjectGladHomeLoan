@@ -155,5 +155,14 @@ public class ServiceClass implements ServiceInterface {
 	public Application findByApplicationId(int id) {
 		return repo.findByApplicationId(id);
 	}
+	
+	@Override
+	public Application get(int ApplicationId) {
+		return repo.findByApplicationId(ApplicationId);
+	}
 
+	@Override
+	public void update(Application application) {
+		repo.addLoanApplication(application);
+	}
 }

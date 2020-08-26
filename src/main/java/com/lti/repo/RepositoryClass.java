@@ -50,6 +50,8 @@ public class RepositoryClass implements RepositoryInterface {
 				.createQuery("select c.id from Customer c where c.customerId =: id and c.customerPassword =:psw")
 				.setParameter("id", userId).setParameter("psw", userPassword).getSingleResult();
 	}
+	
+	
 
 	@Override
 	@Transactional

@@ -37,4 +37,8 @@ public interface ServiceInterface {
 	public boolean changeStatus(Application application);
 
 	public Application findByApplicationId(int id);
+
+	public Application get(int applicationId);
+
+	public void update(Application application);
 }
