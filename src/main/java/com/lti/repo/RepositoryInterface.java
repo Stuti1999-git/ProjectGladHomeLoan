@@ -51,5 +51,13 @@ public interface RepositoryInterface {
 	
 	Application findByApplicationId(int id);
 	
+	public List<Application> findPendingApplications();
+	
+	public boolean validateApplication(int id);
+	
+	public Application rejctApplication(int id);
+	
+	public int addLoan(Loan loan);
+	public List<Loan> viewAllLoan();
 	
 }

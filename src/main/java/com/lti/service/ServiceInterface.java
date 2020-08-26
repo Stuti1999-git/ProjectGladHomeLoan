@@ -36,4 +36,10 @@ public interface ServiceInterface {
 	public boolean changeStatus(Application application);
 
 	public Application findByApplicationId(int id);
+	
+	public List<Application> findPendingApplications();
+	
+	public Loan validateApplication(int id);
+	public Application rejctApplication(int id);
+	public List<Loan> viewAllLoan();
 }

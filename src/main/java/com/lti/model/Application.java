@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Application {
@@ -21,8 +24,8 @@ public class Application {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
 	private int applicationId;
 
-	@ManyToOne
-	@JoinColumn(name = "customer_id")//@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id")
 	private Customer customer;
 
 	@Column
@@ -91,7 +94,8 @@ public class Application {
 	@OneToOne(mappedBy = "applicationDocument",cascade = CascadeType.ALL)
 	private Documents document;
 	
-	@OneToOne(mappedBy = "applicationLoan",cascade = CascadeType.ALL)
+//	@JsonIgnore
+	@OneToOne(mappedBy = "applicationLoan",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Loan loan;
 	
 	public String getMaritialStatus() {
@@ -293,12 +297,24 @@ public class Application {
 		this.document = document;
 	}
 
-	public Loan getLoan() {
-		return loan;
-	}
+//	public Loan getLoan() {
+//		return loan;
+//	}
+//
+//	public void setLoan(Loan loan) {
+//		this.loan = loan;
+//	}
 
-	public void setLoan(Loan loan) {
-		this.loan = loan;
+	@Override
+	public String toString() {
+		return "Application [applicationId=" + applicationId + ", customer=" + customer + ", Gender=" + Gender
+				+ ", address=" + address + ", userPAN=" + userPAN + ", aadharNumber=" + aadharNumber + ", Nationality="
+				+ Nationality + ", retirementAge=" + retirementAge + ", organisation=" + organisation + ", income="
+				+ income + ", loanAmount=" + loanAmount + ", tenure=" + tenure + ", downPayment=" + downPayment
+				+ ", maritialStatus=" + maritialStatus + ", noOfDependents=" + noOfDependents
+				+ ", depandentMonthlyExpenses=" + depandentMonthlyExpenses + ", personlExpenses=" + personlExpenses
+				+ ", existingLoan=" + existingLoan + ", emiExistingLoan=" + emiExistingLoan + ", maxLoanAmount="
+				+ maxLoanAmount + ", loanStatus=" + loanStatus + ", appointmentDate=" + appointmentDate + "]";
 	}
 	
 

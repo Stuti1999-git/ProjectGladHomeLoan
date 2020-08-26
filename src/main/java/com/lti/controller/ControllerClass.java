@@ -18,6 +18,7 @@ import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
+import com.lti.model.Loan;
 import com.lti.service.ServiceInterface;
 import com.lti.status.AdminLoginStatus;
 import com.lti.status.LoginStatus;
@@ -156,4 +157,26 @@ public class ControllerClass {
 	public Application findByApplicationId(@RequestBody Integer id) {
 		return userService.findByApplicationId(id);
 	}
+	
+	@GetMapping("/viewAllPendingApplication")
+	public List<Application> findPendingApplications() {
+		return userService.findPendingApplications();
+	}
+	
+	
+	@PostMapping("/validateCustomer")
+	public Loan validateCustomer(@RequestBody Integer id) {
+		return userService.validateApplication(id);
+	}
+	
+	@PostMapping("/rejectCustomer")
+	public Application rejectCustomer(@RequestBody Integer id) {
+		return userService.rejctApplication(id);
+	}
+	
+	@GetMapping("/viewAllLoan")
+	public List<Loan> viewAllLoan() {
+		return userService.viewAllLoan();
+	}
+	
 }
