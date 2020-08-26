@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.util.FileCopyUtils;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.lti.Dto.AdminLoginDto;
+import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.LoginDto;
+import com.lti.Dto.StatusSendDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -108,8 +112,8 @@ public class ControllerClass {
 	}
 
 	@PostMapping("/applyLoan")
-	public int addloanApplication(Application application) {
-
+	public int addloanApplication(@RequestBody Application application) {
+		//System.out.println(application);
 		return userService.addLoanApplication(application);
 	}
 
@@ -179,4 +183,30 @@ public class ControllerClass {
 		return userService.viewAllLoan();
 	}
 	
+	
+	@PostMapping("/viewLoanByCustomerId")
+	public List<Loan> viewLoanByCustomerId(@RequestBody Integer id) {
+//		int id = fetchById.getId();
+		return userService.viewLoanByCustomerId(id);
+	}
+	
+	@PostMapping("/searchStatus")
+	public StatusFetchByIdDto searchStatus(@RequestBody StatusSendDto statusSendDto) {
+		int applicationId = statusSendDto.getApplicationId();
+		int customerId = statusSendDto.getCustomerid();
+		try {
+			StatusFetchByIdDto result = userService.searchStatus(applicationId,customerId);
+			result.setStatus(StatusType.SUCCESS);
+			result.setMessage("Successfully Fetched");
+			return result;
+			
+		}
+		catch(NullPointerException e) {
+			StatusFetchByIdDto status = new StatusFetchByIdDto();
+			status.setStatus(StatusType.FAILURE);
+			status.setMessage(e.getMessage());
+			return status;
+		}
+		
+	}
 }

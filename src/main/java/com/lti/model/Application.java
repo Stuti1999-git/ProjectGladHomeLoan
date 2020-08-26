@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Application {
@@ -26,10 +27,11 @@ public class Application {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private Customer customer;
 
 	@Column
-	private String Gender;
+	private String gender;
 
 	@Column
 	private String address;
@@ -41,7 +43,7 @@ public class Application {
 	private String aadharNumber;
 
 	@Column
-	private String Nationality;
+	private String nationality;
 
 	@Column
 	private int retirementAge;
@@ -54,6 +56,15 @@ public class Application {
 	
 	@Column
 	private double loanAmount;
+	
+	@Column
+	private String propertyType;
+	
+	@Column
+	private String propertyLocation;
+	
+	@Column
+	private double propertyCost;
 
 	@Column
 	private int tenure;
@@ -86,18 +97,106 @@ public class Application {
 	private String loanStatus="Pending";
 	
 	@Column
+	private String panCard;
+	
+	@Column
+	private String letterOfAgreement;
+	
+	@Column
+	private String noObjectionCerti;
+	
+	@Column
+	private String saleAgreement;
+	
+	@Column
+	private String aadharCard;
+	
+	@Column
+	private String salarySlip;
+	
+	@Column
 	private LocalDate appointmentDate=LocalDate.now().plusDays(7);
 	
-	@OneToOne(mappedBy = "application",cascade = CascadeType.ALL)
-	private Property property;
-	
-	@OneToOne(mappedBy = "applicationDocument",cascade = CascadeType.ALL)
-	private Documents document;
+
 	
 //	@JsonIgnore
 	@OneToOne(mappedBy = "applicationLoan",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Loan loan;
 	
+	
+	
+	public String getPropertyType() {
+		return propertyType;
+	}
+
+	public void setPropertyType(String propertyType) {
+		this.propertyType = propertyType;
+	}
+
+	public String getPropertyLocation() {
+		return propertyLocation;
+	}
+
+	public void setPropertyLocation(String propertyLocation) {
+		this.propertyLocation = propertyLocation;
+	}
+
+	public double getPropertyCost() {
+		return propertyCost;
+	}
+
+	public void setPropertyCost(double propertyCost) {
+		this.propertyCost = propertyCost;
+	}
+
+	public String getPanCard() {
+		return panCard;
+	}
+
+	public void setPanCard(String panCard) {
+		this.panCard = panCard;
+	}
+
+	public String getLetterOfAgreement() {
+		return letterOfAgreement;
+	}
+
+	public void setLetterOfAgreement(String letterOfAgreement) {
+		this.letterOfAgreement = letterOfAgreement;
+	}
+
+	public String getNoObjectionCerti() {
+		return noObjectionCerti;
+	}
+
+	public void setNoObjectionCerti(String noObjectionCerti) {
+		this.noObjectionCerti = noObjectionCerti;
+	}
+
+	public String getSaleAgreement() {
+		return saleAgreement;
+	}
+
+	public void setSaleAgreement(String saleAgreement) {
+		this.saleAgreement = saleAgreement;
+	}
+
+	public String getAadharCard() {
+		return aadharCard;
+	}
+
+	public void setAadharCard(String aadharCard) {
+		this.aadharCard = aadharCard;
+	}
+
+	public String getSalarySlip() {
+		return salarySlip;
+	}
+
+	public void setSalarySlip(String salarySlip) {
+		this.salarySlip = salarySlip;
+	}
+
 	public String getMaritialStatus() {
 		return maritialStatus;
 	}
@@ -122,11 +221,13 @@ public class Application {
 		this.depandentMonthlyExpenses = depandentMonthlyExpenses;
 	}
 
+	
+
 	public double getPersonlExpenses() {
 		return personlExpenses;
 	}
 
-	public void setPersonlExpenses(double personlExpenses) {
+	public void setPersonalExpenses(double personlExpenses) {
 		this.personlExpenses = personlExpenses;
 	}
 
@@ -190,13 +291,7 @@ public class Application {
 		this.customer = customer;
 	}
 
-	public String getGender() {
-		return Gender;
-	}
-
-	public void setGender(String gender) {
-		Gender = gender;
-	}
+	
 
 	public String getAddress() {
 		return address;
@@ -223,15 +318,25 @@ public class Application {
 		this.aadharNumber = aadharNumber;
 	}
 
+	
+
+	
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
 	public String getNationality() {
-		return Nationality;
+		return nationality;
 	}
 
 	public void setNationality(String nationality) {
-		Nationality = nationality;
+		this.nationality = nationality;
 	}
-
-	
 
 	public int getRetirementAge() {
 		return retirementAge;
@@ -281,21 +386,7 @@ public class Application {
 		this.downPayment = downPayment;
 	}
 
-	public Property getProperty() {
-		return property;
-	}
 
-	public void setProperty(Property property) {
-		this.property = property;
-	}
-
-	public Documents getDocument() {
-		return document;
-	}
-
-	public void setDocument(Documents document) {
-		this.document = document;
-	}
 
 //	public Loan getLoan() {
 //		return loan;
@@ -305,17 +396,14 @@ public class Application {
 //		this.loan = loan;
 //	}
 
-	@Override
-	public String toString() {
-		return "Application [applicationId=" + applicationId + ", customer=" + customer + ", Gender=" + Gender
-				+ ", address=" + address + ", userPAN=" + userPAN + ", aadharNumber=" + aadharNumber + ", Nationality="
-				+ Nationality + ", retirementAge=" + retirementAge + ", organisation=" + organisation + ", income="
-				+ income + ", loanAmount=" + loanAmount + ", tenure=" + tenure + ", downPayment=" + downPayment
-				+ ", maritialStatus=" + maritialStatus + ", noOfDependents=" + noOfDependents
-				+ ", depandentMonthlyExpenses=" + depandentMonthlyExpenses + ", personlExpenses=" + personlExpenses
-				+ ", existingLoan=" + existingLoan + ", emiExistingLoan=" + emiExistingLoan + ", maxLoanAmount="
-				+ maxLoanAmount + ", loanStatus=" + loanStatus + ", appointmentDate=" + appointmentDate + "]";
+	
+	public Loan getLoan() {
+		return loan;
 	}
+
+
+
+
 	
 
 

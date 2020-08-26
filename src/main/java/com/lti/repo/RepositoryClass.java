@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
+import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.UpdateAdminDto;
 import com.lti.Dto.UpdateUserDto;
 import com.lti.model.Admin;
@@ -28,12 +29,13 @@ public class RepositoryClass implements RepositoryInterface {
 		Customer u = em.merge(user);
 		return u.getCustomerId();
 	}
-
+	@Override
 	public boolean isCustomerPresent(int userId) {
 		return (Long) em.createQuery("select count(c.customerId) from Customer c where c.customerId =: id")
 				.setParameter("id", userId).getSingleResult() == 1 ? true : false;
 	}
 
+	@Override
 	public boolean doesEmailExist(String email) {
 		return (Long) em.createQuery("select count(c.customerEmail) from Customer c where c.customerEmail =: eml")
 				.setParameter("eml", email).getSingleResult() == 1 ? true : false;
@@ -69,6 +71,7 @@ public class RepositoryClass implements RepositoryInterface {
 	@Override
 	@Transactional
 	public int addLoanApplication(Application application) {
+		System.out.println(application);
 		Application u = em.merge(application);
 		return u.getApplicationId();
 	}
@@ -127,6 +130,7 @@ public class RepositoryClass implements RepositoryInterface {
 	@Transactional
 	public boolean changeStatus(Application application) { // update status in database
 		Application app = em.find(Application.class, application.getApplicationId());
+		
 		if (app != null) {
 			em.merge(application);
 			return true;
@@ -138,6 +142,7 @@ public class RepositoryClass implements RepositoryInterface {
 	public List<Application> viewAllApplications() {
 		String sql = "select app from Application app order by app.applicationId";
 		Query qry = em.createQuery(sql);
+		
 		List<Application> application = qry.getResultList();
 		return application;
 	}
@@ -191,5 +196,29 @@ public class RepositoryClass implements RepositoryInterface {
 		Query qry = em.createQuery(sql);
 		List<Loan> allLoan = qry.getResultList();
 		return allLoan;
+	}
+	@Override
+	public List<Loan> viewLoanByCustomerId(int id) {
+		String sql = "select ln from Loan ln where customerId=:custId";
+		Query qry = em.createQuery(sql);
+		qry.setParameter("custId", id);
+		List<Loan> allLoan = qry.getResultList();
+		return allLoan;
+	}
+	@Override
+	public StatusFetchByIdDto fetchStatus(int applicationId,int customerId) {
+//		String sql = "select app.applicationId, app.loanStatus, app.appointmentDate from Application app where app.applicationId=:appId";
+//		Query qry = em.createQuery(sql);
+//		qry.setParameter("appId", id);
+//		FetchByIdDto result = (FetchByIdDto) qry.getSingleResult();
+		Application app = em.find(Application.class, applicationId);
+		if(app.getCustomer().getCustomerId()==customerId) {
+			StatusFetchByIdDto result = new StatusFetchByIdDto();
+			result.setApplicationId(app.getApplicationId());
+			result.setAppointmentDate(app.getAppointmentDate());
+			result.setLoanStatus(app.getLoanStatus());
+			return result;
+		}
+		return null;
 	}
 }

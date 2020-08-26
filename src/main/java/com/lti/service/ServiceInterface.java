@@ -2,6 +2,10 @@ package com.lti.service;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.UpdateAdminDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -17,7 +21,7 @@ public interface ServiceInterface {
 
 	public boolean updateUser(Customer user);
 
-	public int addLoanApplication(Application loan);
+	public int addLoanApplication(Application application);
 
 	// Admin
 
@@ -42,4 +46,6 @@ public interface ServiceInterface {
 	public Loan validateApplication(int id);
 	public Application rejctApplication(int id);
 	public List<Loan> viewAllLoan();
+	public List<Loan> viewLoanByCustomerId(int id);
+	public StatusFetchByIdDto searchStatus(int applicationId,int customerId);
 }

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -50,14 +52,43 @@ public class ServiceClass implements ServiceInterface {
 
 	@Override
 	public int addLoanApplication(Application application) {
-		if (application.getNoOfDependents() > 0) {
-			if (application.getExistingLoan() == "YES") {
+		/*
+		 * Customer customer = new Customer(); Application app = new Application();
+		 * customer.setCustomerId(application.getCustomerId());
+		 * app.setCustomer(customer); app.setAadharCard(application.getAadharCard());
+		 * app.setAadharNumber(application.getAadharNumber());
+		 * app.setAddress(application.getAddress());
+		 * app.setDepandentMonthlyExpenses(application.getDepandentMonthlyExpenses());
+		 * app.setDownPayment(application.getDownPayment());
+		 * app.setEmiExistingLoan(application.getEmiExistingLoan());
+		 * app.setExistingLoan(application.getExistingLoan());
+		 * app.setGender(application.getGender());
+		 * app.setIncome(application.getIncome());
+		 * app.setLetterOfAgreement(application.getLetterOfAgreement());
+		 * app.setLoanAmount(application.getLoanAmount());
+		 * app.setLoanStatus(application.getLoanStatus());
+		 * app.setMaritialStatus(application.getMaritialStatus());
+		 * app.setNationality(application.getNationality());
+		 * app.setNoOfDependents(application.getNoOfDependents());
+		 * app.setOrganisation(application.getOrganisation());
+		 * app.setPersonlExpenses(application.getPersonlExpenses());
+		 */
+		
+		
+ int noOfdep = application.getNoOfDependents();
+ System.out.println(application.getExistingLoan());
+		
+		if (noOfdep > 0) {
+			
+			if (application.getExistingLoan().equals("YES")) {
 				application.setMaxLoanAmount(application.getIncome() - application.getDepandentMonthlyExpenses()
 				- application.getEmiExistingLoan() - application.getPersonlExpenses());
+				System.out.println("Hiiiiiiiiiiiiiiiiiii");
 			}
 			else {
 				application.setMaxLoanAmount(application.getIncome() - application.getDepandentMonthlyExpenses()
 						 - application.getPersonlExpenses());
+				System.out.println("Byeeeeeeeeeeee");
 			}
 		}
 			else {
@@ -138,6 +169,7 @@ public class ServiceClass implements ServiceInterface {
 		if(repo.validateApplication(id)) {
 			Loan newLoan = new Loan();
 			newLoan.setApplicationLoan(application);
+			newLoan.setCustomerId(application.getCustomer().getCustomerId());
 			int tenure = application.getTenure();
 			tenure = tenure*12;
 			double loanAmount = application.getLoanAmount();
@@ -167,6 +199,16 @@ public class ServiceClass implements ServiceInterface {
 	@Override
 	public List<Loan> viewAllLoan() {
 		return repo.viewAllLoan();
+	}
+
+	@Override
+	public List<Loan> viewLoanByCustomerId(int id) {
+		return repo.viewLoanByCustomerId(id);
+	}
+
+	@Override
+	public StatusFetchByIdDto searchStatus(int applicationId,int customerId) {
+		return repo.fetchStatus( applicationId, customerId);
 	}
 
 }
