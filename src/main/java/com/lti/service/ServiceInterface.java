@@ -35,6 +35,8 @@ public interface ServiceInterface {
 
 	public Customer findAUser(int userId);
 
+	public Customer findByEmail(String email);
+
 	public List<Application> viewAllApplications();
 
 	public boolean changeStatus(Application application);
@@ -48,4 +50,8 @@ public interface ServiceInterface {
 	public List<Loan> viewAllLoan();
 	public List<Loan> viewLoanByCustomerId(int id);
 	public StatusFetchByIdDto searchStatus(int applicationId,int customerId);
+
+	public Application get(int applicationId);
+
+	public void update(Application application);
 }

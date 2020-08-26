@@ -36,6 +36,11 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
+	public Customer findbyEmail(String email) {
+		return (Customer) em.createQuery("select c from Customer c where c.customerEmail =: eml")
+				.getResultList();
+	}
+	@Override
 	public boolean doesEmailExist(String email) {
 		return (Long) em.createQuery("select count(c.customerEmail) from Customer c where c.customerEmail =: eml")
 				.setParameter("eml", email).getSingleResult() == 1 ? true : false;
@@ -52,6 +57,8 @@ public class RepositoryClass implements RepositoryInterface {
 				.createQuery("select c.id from Customer c where c.customerId =: id and c.customerPassword =:psw")
 				.setParameter("id", userId).setParameter("psw", userPassword).getSingleResult();
 	}
+	
+	
 
 	@Override
 	@Transactional

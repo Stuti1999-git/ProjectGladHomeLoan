@@ -11,45 +11,47 @@ import com.lti.model.Loan;
 
 public interface RepositoryInterface {
 
-	//User
+	// User
 	public int registerUser(Customer user);
-	
-	public int isValidUser(int userId,String userPassword);
-	
+
+	public int isValidUser(int userId, String userPassword);
+
 	public boolean updateUser(Customer user);
-	
+
 	public int addLoanApplication(Application application);
-	
+
 	public boolean isCustomerPresent(int userId);
-	
-	
-	//Admin
+
+	public Customer findbyEmail(String email);
+
+	// Admin
 	int registerAdmin(Admin admin);
-	public long adminLogin(int employeeId,String adminPassword);
+
+	public long adminLogin(int employeeId, String adminPassword);
+
 	public Admin findAdminById(int adminId);
+
 	public boolean isAdminPresent(int adminId);
-	
-	
+
 	public List<Customer> viewAllUsers();
-	
+
 	public List<Application> viewAllApplications();
-	
+
 	public boolean updateAdmin(Admin admin);
-	
+
 	public Customer findAUser(int userId);
-	
-	public boolean changeStatus(Application application); //Will pass full application from Admin side also with auto filled fields
+
+	public boolean changeStatus(Application application); // Will pass full application from Admin side also with auto
+															// filled fields
 
 	public Customer finById(int id);
-	
-	
 
 	public boolean doesEmailExist(String customerEmail);
 
-	//boolean updateUser(UpdateUserDto user);
+	// boolean updateUser(UpdateUserDto user);
 
-	//public Customer findByEmail(String email);
-	
+	// public Customer findByEmail(String email);
+
 	Application findByApplicationId(int id);
 	
 	public List<Application> findPendingApplications();
@@ -62,5 +64,5 @@ public interface RepositoryInterface {
 	public List<Loan> viewAllLoan();
 	public List<Loan> viewLoanByCustomerId(int id);
 	public StatusFetchByIdDto fetchStatus(int applicationId,int customerId);
-	
+
 }
