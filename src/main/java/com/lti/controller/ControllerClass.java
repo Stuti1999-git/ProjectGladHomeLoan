@@ -1,20 +1,20 @@
 package com.lti.controller;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.lti.Dto.AdminLoginDto;
-import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.LoginDto;
+import com.lti.Dto.StatusSendDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -109,7 +109,7 @@ public class ControllerClass {
 
 	@PostMapping("/applyLoan")
 	public int addloanApplication(@RequestBody Application application) {
-		//System.out.println(application);
+		// System.out.println(application);
 		return userService.addLoanApplication(application);
 	}
 
@@ -141,16 +141,22 @@ public class ControllerClass {
 	@PostMapping("/changeStatus")
 	public Status changeStatus(Application application) {
 		Status status = new Status();
-		if(userService.changeStatus(application)) {
+		if (userService.changeStatus(application)) {
 			status.setMessage("Updated Successfully");
 			status.setStatus(StatusType.SUCCESS);
 			return status;
-		}
-		else {
+		} else {
 			status.setMessage("Not Updated");
 			status.setStatus(StatusType.FAILURE);
 			return status;
 		}
+	}
+
+	@PostMapping("/generateCheckList")
+	public ChecklistDto checkList(StatusSendDto status) {
+		int applicationId = status.getApplicationId();
+		int customerId = status.getCustomerId();
+		return userService.checklist(applicationId, customerId);
 	}
 
 	@PostMapping("/viewApplication")

@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.ChecklistDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
-import com.lti.model.Loan;
 import com.lti.repo.RepositoryInterface;
 
 @Service
@@ -103,7 +102,24 @@ public class ServiceClass implements ServiceInterface {
 		
 		return repo.addLoanApplication(application);
 	}
+	
+	@Override
+	public Application get(int id) {
+		return repo.findAppById(id);
+	}
+	
+	@Override
+	public void update(Application application) {
+		repo.save(application);
+	}
 
+	@Override
+	public ChecklistDto checklist(int applicationId, int customerId) {
+		return repo.checklist(applicationId, customerId);
+	}
+	
+	
+	
 	@Override
 	public Admin adminLogin(int adminId, String adminPassword) {
 		try {

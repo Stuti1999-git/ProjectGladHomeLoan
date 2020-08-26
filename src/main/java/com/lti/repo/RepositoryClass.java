@@ -9,11 +9,11 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
 
-import com.lti.Dto.UpdateAdminDto;
-import com.lti.Dto.UpdateUserDto;
+import com.lti.Dto.ChecklistDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
+import com.lti.status.Status.StatusType;
 
 @Repository
 public class RepositoryClass implements RepositoryInterface {
@@ -27,6 +27,7 @@ public class RepositoryClass implements RepositoryInterface {
 		Customer u = em.merge(user);
 		return u.getCustomerId();
 	}
+
 	@Override
 	public boolean isCustomerPresent(int userId) {
 		return (Long) em.createQuery("select count(c.customerId) from Customer c where c.customerId =: id")
@@ -42,6 +43,38 @@ public class RepositoryClass implements RepositoryInterface {
 	@Override
 	public Customer finById(int id) {
 		return em.find(Customer.class, id);
+	}
+
+	@Override
+	public Application findAppById(int id) {
+		return em.find(Application.class, id);
+	}
+
+	@Override
+	public ChecklistDto checklist(int appId, int custId) {
+		Application app = em.find(Application.class, appId);
+		ChecklistDto checklist = new ChecklistDto();
+		if (app.getCustomer().getCustomerId() == custId) {
+			
+			checklist.setStatus(StatusType.SUCCESS);
+			
+			checklist.setCustomerId(custId);
+			checklist.setApplicationId(appId);
+			checklist.setAadharCard(app.getAadharCard());
+			checklist.setLetterOfAgreement(app.getLetterOfAgreement());
+			checklist.setNoObjectionCerti(app.getNoObjectionCerti());
+			checklist.setPanCard(app.getPanCard());
+			checklist.setSalarySlip(app.getSalarySlip());
+			checklist.setSaleAgreement(app.getSaleAgreement());
+			return checklist;
+			
+			}
+		else {
+			checklist.setStatus(StatusType.FAILURE);
+			checklist.setMessage("Sorry, this application id does not belong to you");
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -72,6 +105,12 @@ public class RepositoryClass implements RepositoryInterface {
 		System.out.println(application);
 		Application u = em.merge(application);
 		return u.getApplicationId();
+	}
+
+	@Override
+	@Transactional
+	public void save(Application application) {
+		em.merge(application);
 	}
 
 	@Override
@@ -128,7 +167,7 @@ public class RepositoryClass implements RepositoryInterface {
 	@Transactional
 	public boolean changeStatus(Application application) { // update status in database
 		Application app = em.find(Application.class, application.getApplicationId());
-		
+
 		if (app != null) {
 			em.merge(application);
 			return true;
@@ -140,10 +179,11 @@ public class RepositoryClass implements RepositoryInterface {
 	public List<Application> viewAllApplications() {
 		String sql = "select app from Application app order by app.applicationId";
 		Query qry = em.createQuery(sql);
-		
+
 		List<Application> application = qry.getResultList();
 		return application;
 	}
+
 	@Override
 	public Application findByApplicationId(int id) {
 		Application app = em.find(Application.class, id);

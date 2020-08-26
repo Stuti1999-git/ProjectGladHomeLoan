@@ -2,6 +2,7 @@ package com.lti.repo;
 
 import java.util.List;
 
+import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.UpdateUserDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -50,6 +51,12 @@ public interface RepositoryInterface {
 	//public Customer findByEmail(String email);
 	
 	Application findByApplicationId(int id);
+
+	void save(Application application);
+
+	Application findAppById(int id);
+
+	ChecklistDto checklist(int appId, int custId);
 	
 	
 }

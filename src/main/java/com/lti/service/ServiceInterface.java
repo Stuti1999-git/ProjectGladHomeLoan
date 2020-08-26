@@ -2,7 +2,10 @@ package com.lti.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.UpdateAdminDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -37,4 +40,12 @@ public interface ServiceInterface {
 	public boolean changeStatus(Application application);
 
 	public Application findByApplicationId(int id);
+
+	Application get(int id);
+
+	void update(Application application);
+
+	ChecklistDto checklist(int applicationId, int customerId);
+
+	
 }
