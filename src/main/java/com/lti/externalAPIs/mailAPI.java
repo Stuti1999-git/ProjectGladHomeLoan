@@ -42,7 +42,7 @@ public class mailAPI {
 		message.setFrom("abhishek.sethi@lntinfotech.com");
 		message.setTo(userEmail);
 		message.setSubject("Verify Email");
-		message.setText("Dear User!" + "\n\n" + "You have successfully verified your registered email." + "\n"
+		message.setText("Dear " + "\n\n" + "You have successfully verified your registered email." + "\n"
 				+ "This is your otp " + otp + ". Use it to reset your password." + "\n\n" + "Have a good day." + "\n"
 				+ "Bank Of LTI");
 		mailSender.send(message);

@@ -1,12 +1,8 @@
 package com.lti.controller;
 
-
 import java.io.FileOutputStream;
 import java.io.IOException;
-//github.com/Stuti1999-git/ProjectGladHomeLoan.git
 import java.util.List;
-
-//github.com/Stuti1999-git/ProjectGladHomeLoan.git
 
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +19,6 @@ import com.lti.Dto.AdminLoginDto;
 import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.DocumentDto;
 import com.lti.Dto.ForgotPasswordDto;
-//github.com/Stuti1999-git/ProjectGladHomeLoan.git
 import com.lti.Dto.LoginDto;
 import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.StatusSendDto;
@@ -61,10 +56,13 @@ public class ControllerClass {
 			status.setStatus(StatusType.SUCCESS);
 			status.setMessage("Registration successful");
 			SimpleMailMessage message = new SimpleMailMessage();
-			message.setFrom("abhishek.sethi@lntinfotech.com");
+			message.setFrom("LTI.HomeLoan@outlook.com");
 			message.setTo(customer.getCustomerEmail());
-			message.setSubject("Thank You for registering with Bank Of LTI");
-			message.setText("Your Customer ID is : " + status.getCustomerId());
+			message.setSubject("Welcome to LTI Home Loan");
+			message.setText("Dear"+customer.getCustomerFirstName()+"\n\n"+
+					"Thank You for registering with Bank Of LTI.Your Customer ID is : " + status.getCustomerId()+
+					"\n\n"+"Have a good day."+"\n"
+					+ "LTI HomeLoan");
 			mailSender.send(message);
 			return status;
 
