@@ -18,7 +18,7 @@ import com.lti.model.Loan;
 
 public interface ServiceInterface {
 
-	// User
+
 	public int registerUser(Customer user);
 
 	public Customer isValidUser(int userId, String userPassword);
@@ -30,7 +30,7 @@ public interface ServiceInterface {
 	public int findByEmailforOTP(String userEmail);
 
 	public boolean forgotPassword(String userEmail, String newPassword);
-	// Admin
+
 
 	public Admin adminLogin(int employeeId, String adminPassword);
 
@@ -47,9 +47,9 @@ public interface ServiceInterface {
 	public boolean changeStatus(Application application);
 
 	public Application findByApplicationId(int id);
-	
+
 	public List<Application> findPendingApplications();
-	
+
 	public Loan validateApplication(int id);
 	public Application rejctApplication(int id);
 	public List<Loan> viewAllLoan();
@@ -57,11 +57,11 @@ public interface ServiceInterface {
 	public StatusFetchByIdDto searchStatus(int applicationId,int customerId);
 
 
-	
+
 
 	ChecklistDto checklist(int applicationId, int customerId);
 
-	
+
 
 	public Application get(int applicationId);
 

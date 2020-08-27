@@ -174,7 +174,6 @@ public class ServiceClass implements ServiceInterface {
 			repo.addLoan(newLoan);
 			return newLoan;
 		}
-//		return repo.validateApplication(id);
 		return null;
 	}
 

@@ -241,13 +241,9 @@ public class RepositoryClass implements RepositoryInterface {
 	@Override
 	@Transactional
 	public boolean validateApplication(int id) {
-//		String sql = "update Application app set app.loanStatus='Verified' where app.applicationId=:appId";
-//		Query qry = em.createQuery(sql);
-//		qry.setParameter("appId", id);
 		Application application = em.find(Application.class, id);
 		application.setLoanStatus("Verified");
 		em.merge(application);
-//		return em.merge(application);
 		return true;
 	}
 	
@@ -285,10 +281,6 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 	@Override
 	public StatusFetchByIdDto fetchStatus(int applicationId,int customerId) {
-//		String sql = "select app.applicationId, app.loanStatus, app.appointmentDate from Application app where app.applicationId=:appId";
-//		Query qry = em.createQuery(sql);
-//		qry.setParameter("appId", id);
-//		FetchByIdDto result = (FetchByIdDto) qry.getSingleResult();
 		Application app = em.find(Application.class, applicationId);
 		if(app.getCustomer().getCustomerId()==customerId) {
 			StatusFetchByIdDto result = new StatusFetchByIdDto();

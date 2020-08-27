@@ -24,8 +24,6 @@ public class Loan {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "loan_sequence")
 	private int loanId;
 
-//	@Column
-//	private double balance;
 
 	@Column
 	private double interestRate=8.75;
@@ -41,9 +39,6 @@ public class Loan {
 
 	@Column
 	private LocalDate emiEndDate;
-
-//	@Column
-//	private LocalDate emiNextDate;
 	
 	@Column
 	private int customerId;

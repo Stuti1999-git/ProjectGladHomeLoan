@@ -14,7 +14,6 @@ import com.lti.model.Loan;
 
 public interface RepositoryInterface {
 
-	// User
 	public int registerUser(Customer user);
 
 	public int isValidUser(int userId, String userPassword);
@@ -29,7 +28,6 @@ public interface RepositoryInterface {
 
 	public void forgotPassword(String userEmail, String newPassword);
 
-	// Admin
 	int registerAdmin(Admin admin);
 
 	public long adminLogin(int employeeId, String adminPassword);
@@ -46,16 +44,10 @@ public interface RepositoryInterface {
 
 	public Customer findAUser(int userId);
 
-	public boolean changeStatus(Application application); // Will pass full application from Admin side also with auto
-															// filled fields
-
+	public boolean changeStatus(Application application);
 	public Customer finById(int id);
 
 	public boolean doesEmailExist(String customerEmail);
-
-	// boolean updateUser(UpdateUserDto user);
-
-	// public Customer findByEmail(String email);
 
 	Application findByApplicationId(int id);
 	
