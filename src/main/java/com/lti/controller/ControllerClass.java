@@ -64,7 +64,9 @@ public class ControllerClass {
 			SimpleMailMessage message = new SimpleMailMessage();
 			message.setFrom("abhishek.sethi@lntinfotech.com");
 			message.setTo(customer.getCustomerEmail());
-			message.setSubject("Thank You for registering with Bank Of LTI");
+			message.setSubject("Dear"+customer.getCustomerFirstName()+"\n\n"+
+			"Thank You for registering with Bank Of LTI."+"\n\n"+"Have a good day."+"\n"
+					+ "LTI HomeLoan");
 			message.setText("Your Customer ID is : " + status.getCustomerId());
 			mailSender.send(message);
 			return status;
