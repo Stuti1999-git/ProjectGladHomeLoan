@@ -3,18 +3,18 @@ package com.lti.Dto;
 public class StatusSendDto {
 
 	private int applicationId;
-	private int customerId;
+	private int customerid;
 	public int getApplicationId() {
 		return applicationId;
 	}
 	public void setApplicationId(int applicationId) {
 		this.applicationId = applicationId;
 	}
-	public int getCustomerId() {
-		return customerId;
+	public int getCustomerid() {
+		return customerid;
 	}
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
+	public void setCustomerid(int customerid) {
+		this.customerid = customerid;
 	}
 	
 }
