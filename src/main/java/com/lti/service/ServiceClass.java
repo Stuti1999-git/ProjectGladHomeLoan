@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.exception.CustomerServiceException;
+import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -59,20 +60,21 @@ public class ServiceClass implements ServiceInterface {
 		if (noOfdep > 0) {
 
 			if (application.getExistingLoan().equals("YES")) {
-				application.setMaxLoanAmount(60*(0.6*(application.getIncome() - application.getDepandentMonthlyExpenses()
-						- application.getEmiExistingLoan() - application.getPersonlExpenses())));
+				application.setMaxLoanAmount(
+						60 * (0.6 * (application.getIncome() - application.getDepandentMonthlyExpenses()
+								- application.getEmiExistingLoan() - application.getPersonlExpenses())));
 				System.out.println("Hiiiiiiiiiiiiiiiiiii");
 			} else {
-				application.setMaxLoanAmount(60*(0.6*(application.getIncome() - application.getDepandentMonthlyExpenses()
-						- application.getPersonlExpenses())));
+				application.setMaxLoanAmount(60 * (0.6 * (application.getIncome()
+						- application.getDepandentMonthlyExpenses() - application.getPersonlExpenses())));
 				System.out.println("Byeeeeeeeeeeee");
 			}
 		} else {
 			if (application.getExistingLoan() == "YES") {
-				application.setMaxLoanAmount(60*(0.6*(
-						application.getIncome() - application.getEmiExistingLoan() - application.getPersonlExpenses())));
+				application.setMaxLoanAmount(60 * (0.6 * (application.getIncome() - application.getEmiExistingLoan()
+						- application.getPersonlExpenses())));
 			} else {
-				application.setMaxLoanAmount(60*(0.6*(application.getIncome() - application.getPersonlExpenses())));
+				application.setMaxLoanAmount(60 * (0.6 * (application.getIncome() - application.getPersonlExpenses())));
 			}
 
 		}
@@ -143,6 +145,7 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
+
 	public List<Application> findPendingApplications() {
 		return repo.findPendingApplications();
 	}
@@ -150,23 +153,23 @@ public class ServiceClass implements ServiceInterface {
 	@Override
 	public Loan validateApplication(int id) {
 		Application application = repo.findByApplicationId(id);
-		if(repo.validateApplication(id)) {
+		if (repo.validateApplication(id)) {
 			Loan newLoan = new Loan();
 			newLoan.setApplicationLoan(application);
 			newLoan.setCustomerId(application.getCustomer().getCustomerId());
 			int tenure = application.getTenure();
-			tenure = tenure*12;
+			tenure = tenure * 12;
 			double loanAmount = application.getLoanAmount();
-			double roi = newLoan.getInterestRate()/(12*100);
-			double pow1 = Math.pow((1+roi), (tenure));
-			double pow2 = Math.pow((1+roi), (tenure))-1;
-			double emi = (loanAmount*roi*pow1)/pow2;
+			double roi = newLoan.getInterestRate() / (12 * 100);
+			double pow1 = Math.pow((1 + roi), (tenure));
+			double pow2 = Math.pow((1 + roi), (tenure)) - 1;
+			double emi = (loanAmount * roi * pow1) / pow2;
 			emi = Math.round(emi);
 			newLoan.setEmiAmount(emi);
-			newLoan.setTenure(tenure/12);
+			newLoan.setTenure(tenure / 12);
 			newLoan.setLoanAmount(loanAmount);
 			newLoan.setEmiStartDate(LocalDate.now());
-			newLoan.setEmiEndDate(LocalDate.now().plusYears(tenure/12));
+			newLoan.setEmiEndDate(LocalDate.now().plusYears(tenure / 12));
 			newLoan.setVerificationDate(application.getAppointmentDate());
 			repo.addLoan(newLoan);
 			return newLoan;
@@ -191,13 +194,8 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
-	public StatusFetchByIdDto searchStatus(int applicationId,int customerId) {
-		return repo.fetchStatus( applicationId, customerId);
-	}
-
-
-	public Customer findByEmail(String email) {
-		return repo.findbyEmail(email);
+	public StatusFetchByIdDto searchStatus(int applicationId, int customerId) {
+		return repo.fetchStatus(applicationId, customerId);
 	}
 
 	@Override
@@ -209,4 +207,23 @@ public class ServiceClass implements ServiceInterface {
 	public void update(Application application) {
 		repo.addLoanApplication(application);
 	}
+
+	@Override
+	public int findByEmailforOTP(String userEmail) {
+
+		if (repo.findByEmail(userEmail)) {
+			return (int) (Math.round(Math.random() * 899999));
+		} else {
+			throw new CustomerServiceException("Incorrect Email Provided");
+		}
+
+	}
+
+	@Override
+	public boolean forgotPassword(String userEmail, String newPassword) {
+		repo.forgotPassword(userEmail, newPassword);
+		return true;
+
+	}
+
 }

@@ -25,7 +25,9 @@ public interface RepositoryInterface {
 
 	public boolean isCustomerPresent(int userId);
 
-	public Customer findbyEmail(String email);
+	public boolean findByEmail(String email);
+
+	public void forgotPassword(String userEmail, String newPassword);
 
 	// Admin
 	int registerAdmin(Admin admin);

@@ -43,9 +43,11 @@ public class RepositoryClass implements RepositoryInterface {
 	}
 
 	@Override
-	public Customer findbyEmail(String email) {
-		return (Customer) em.createQuery("select c from Customer c where c.customerEmail =: eml")
-				.getResultList();
+	public boolean findByEmail(String email) {
+		return (long) em.createQuery(
+				"select count(c.customerId) from Customer c where c.customerEmail=:em ")
+				.setParameter("em", email).getSingleResult() == 1 ? true : false;
+
 	}
 	@Override
 	public boolean doesEmailExist(String email) {
@@ -105,6 +107,23 @@ public class RepositoryClass implements RepositoryInterface {
 	
 	
 
+	@Override
+	@Transactional
+	public void forgotPassword(String userEmail, String newPassword) {
+		String sql = "select c.customerId from Customer c where c.customerEmail=:email";
+		Query qry = em.createQuery(sql);
+		qry.setParameter("email", userEmail);
+		int id = (int) qry.getSingleResult();
+
+		Customer ud = em.find(Customer.class, id);
+		System.out.println(id);
+		System.out.println(ud.toString());
+		ud.setCustomerPassword(newPassword);
+
+		em.merge(ud);
+
+	}
+	
 	@Override
 	@Transactional
 	public boolean updateUser(Customer user) {
