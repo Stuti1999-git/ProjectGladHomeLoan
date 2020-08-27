@@ -20,6 +20,9 @@ public interface ServiceInterface {
 
 	public int addLoanApplication(Application application);
 
+	public int findByEmailforOTP(String userEmail);
+
+	public boolean forgotPassword(String userEmail, String newPassword);
 	// Admin
 
 	public Admin adminLogin(int employeeId, String adminPassword);
@@ -31,8 +34,6 @@ public interface ServiceInterface {
 	public boolean updateAdmin(Admin admin);
 
 	public Customer findAUser(int userId);
-
-	public Customer findByEmail(String email);
 
 	public List<Application> viewAllApplications();
 

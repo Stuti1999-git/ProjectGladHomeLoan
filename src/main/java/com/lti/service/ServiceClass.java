@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.lti.Dto.ApplicationDto;
 import com.lti.exception.CustomerServiceException;
+import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
@@ -131,11 +132,6 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
-	public Customer findByEmail(String email) {
-		return repo.findbyEmail(email);
-	}
-
-	@Override
 	public Application get(int ApplicationId) {
 		return repo.findByApplicationId(ApplicationId);
 	}
@@ -144,4 +140,23 @@ public class ServiceClass implements ServiceInterface {
 	public void update(Application application) {
 		repo.addLoanApplication(application);
 	}
+
+	@Override
+	public int findByEmailforOTP(String userEmail) {
+
+		if (repo.findByEmail(userEmail)) {
+			return (int) (Math.round(Math.random() * 899999));
+		} else {
+			throw new CustomerServiceException("Incorrect Email Provided");
+		}
+
+	}
+
+	@Override
+	public boolean forgotPassword(String userEmail, String newPassword) {
+		repo.forgotPassword(userEmail, newPassword);
+		return true;
+
+	}
+
 }
