@@ -11,12 +11,16 @@ import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
 import com.lti.repo.RepositoryInterface;
+import com.lti.service.ServiceInterface;
 
 @SpringBootTest
 class HomeLoanApplicationTests {
 
 	@Autowired
 	private RepositoryInterface repo;
+
+	@Autowired
+	private ServiceInterface service;
 
 	@Test
 	void registerCustomer() {
@@ -58,12 +62,15 @@ class HomeLoanApplicationTests {
 	void addApplication() {
 
 		Application application = new Application();
-
+		Customer customer = new Customer();
+		customer = repo.finById(90585);
 		application.setMaritialStatus("UnMarried");
 		application.setNoOfDependents(3);
 		application.setDepandentMonthlyExpenses(6600);
 		application.setPersonalExpenses(5000);
 		application.setExistingLoan("NO");
+		application.setEmiExistingLoan(0);
+		application.setMaxLoanAmount(0);
 
 		application.setMaritialStatus("Married");
 		application.setNoOfDependents(1);
@@ -73,17 +80,17 @@ class HomeLoanApplicationTests {
 		application.setEmiExistingLoan(2345);
 		application.setMaxLoanAmount(234);
 		application.setGender("Male");
-		application.setAddress("ABC");
-		application.setUserPAN("BANPS");
-		application.setAadharNumber("12345");
+		application.setAddress("EFG, HL");
+		application.setUserPAN("JRVPS1079P");
+		application.setAadharNumber("248512340000");
 		application.setNationality("Indian");
-		application.setRetirementAge(55);
+		application.setRetirementAge(60);
 		application.setOrganisation("LTI");
-		application.setIncome(36000);
-		application.setLoanAmount(1500000);
-		application.setTenure(12);
-		application.setDownPayment(20000);
-
+		application.setIncome(35000);
+		application.setLoanAmount(2500000);
+		application.setTenure(20);
+		application.setDownPayment(550000);
+		application.setCustomer(customer);
 		System.out.println(repo.addLoanApplication(application));
 
 	}
@@ -116,4 +123,23 @@ class HomeLoanApplicationTests {
 		System.out.println(repo.findAUser(90501));
 	}
 
+	@Test
+	void findPending() {
+		System.out.println(repo.findPendingApplications());
+	}
+
+	@Test
+	void validate() {
+		service.validateApplication(20302);
+	}
+
+	@Test
+	void loanDetailsById() {
+		System.out.println(repo.viewLoanByCustomerId(90620));
+	}
+
+	@Test
+	void fetchByApplicationId() {
+		System.out.println(repo.fetchStatus(20381, 90620));
+	}
 }

@@ -1,5 +1,6 @@
 package com.lti.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
@@ -58,20 +60,21 @@ public class ServiceClass implements ServiceInterface {
 		if (noOfdep > 0) {
 
 			if (application.getExistingLoan().equals("YES")) {
-				application.setMaxLoanAmount(application.getIncome() - application.getDepandentMonthlyExpenses()
-						- application.getEmiExistingLoan() - application.getPersonlExpenses());
+				application.setMaxLoanAmount(
+						60 * (0.6 * (application.getIncome() - application.getDepandentMonthlyExpenses()
+								- application.getEmiExistingLoan() - application.getPersonlExpenses())));
 				System.out.println("Hiiiiiiiiiiiiiiiiiii");
 			} else {
-				application.setMaxLoanAmount(application.getIncome() - application.getDepandentMonthlyExpenses()
-						- application.getPersonlExpenses());
+				application.setMaxLoanAmount(60 * (0.6 * (application.getIncome()
+						- application.getDepandentMonthlyExpenses() - application.getPersonlExpenses())));
 				System.out.println("Byeeeeeeeeeeee");
 			}
 		} else {
 			if (application.getExistingLoan() == "YES") {
-				application.setMaxLoanAmount(
-						application.getIncome() - application.getEmiExistingLoan() - application.getPersonlExpenses());
+				application.setMaxLoanAmount(60 * (0.6 * (application.getIncome() - application.getEmiExistingLoan()
+						- application.getPersonlExpenses())));
 			} else {
-				application.setMaxLoanAmount(application.getIncome() - application.getPersonlExpenses());
+				application.setMaxLoanAmount(60 * (0.6 * (application.getIncome() - application.getPersonlExpenses())));
 			}
 
 		}
@@ -129,6 +132,60 @@ public class ServiceClass implements ServiceInterface {
 	@Override
 	public Application findByApplicationId(int id) {
 		return repo.findByApplicationId(id);
+	}
+
+	@Override
+
+	public List<Application> findPendingApplications() {
+		return repo.findPendingApplications();
+	}
+
+	@Override
+	public Loan validateApplication(int id) {
+		Application application = repo.findByApplicationId(id);
+		if (repo.validateApplication(id)) {
+			Loan newLoan = new Loan();
+			newLoan.setApplicationLoan(application);
+			newLoan.setCustomerId(application.getCustomer().getCustomerId());
+			int tenure = application.getTenure();
+			tenure = tenure * 12;
+			double loanAmount = application.getLoanAmount();
+			double roi = newLoan.getInterestRate() / (12 * 100);
+			double pow1 = Math.pow((1 + roi), (tenure));
+			double pow2 = Math.pow((1 + roi), (tenure)) - 1;
+			double emi = (loanAmount * roi * pow1) / pow2;
+			emi = Math.round(emi);
+			newLoan.setEmiAmount(emi);
+			newLoan.setTenure(tenure / 12);
+			newLoan.setLoanAmount(loanAmount);
+			newLoan.setEmiStartDate(LocalDate.now());
+			newLoan.setEmiEndDate(LocalDate.now().plusYears(tenure / 12));
+			newLoan.setVerificationDate(application.getAppointmentDate());
+			repo.addLoan(newLoan);
+			return newLoan;
+		}
+//		return repo.validateApplication(id);
+		return null;
+	}
+
+	@Override
+	public Application rejctApplication(int id) {
+		return repo.rejctApplication(id);
+	}
+
+	@Override
+	public List<Loan> viewAllLoan() {
+		return repo.viewAllLoan();
+	}
+
+	@Override
+	public List<Loan> viewLoanByCustomerId(int id) {
+		return repo.viewLoanByCustomerId(id);
+	}
+
+	@Override
+	public StatusFetchByIdDto searchStatus(int applicationId, int customerId) {
+		return repo.fetchStatus(applicationId, customerId);
 	}
 
 	@Override

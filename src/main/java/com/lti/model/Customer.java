@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -47,7 +48,7 @@ public class Customer {
 	@Column
 	private LocalDate customerdateOfBirth;
 	@JsonIgnore
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Application> application;
 
 	private String resetToken;
@@ -140,13 +141,13 @@ public class Customer {
 		this.application = application;
 	}
 
-	@Override
-	public String toString() {
-		return "Customer [customerId=" + customerId + ", customerFirstName=" + customerFirstName + ", customerLastName="
-				+ customerLastName + ", customerEmail=" + customerEmail + ", customerPassword=" + customerPassword
-				+ ", customerMobileNumber=" + customerMobileNumber + ", customerCity=" + customerCity
-				+ ", customerEmploymentType=" + customerEmploymentType + ", customerdateOfBirth=" + customerdateOfBirth
-				+ "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Customer [customerId=" + customerId + ", customerFirstName=" + customerFirstName + ", customerLastName="
+//				+ customerLastName + ", customerEmail=" + customerEmail + ", customerPassword=" + customerPassword
+//				+ ", customerMobileNumber=" + customerMobileNumber + ", customerCity=" + customerCity
+//				+ ", customerEmploymentType=" + customerEmploymentType + ", customerdateOfBirth=" + customerdateOfBirth
+//				+ "]";
+//	}
 
 }

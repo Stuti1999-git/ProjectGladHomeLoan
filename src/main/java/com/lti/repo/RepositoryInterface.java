@@ -2,6 +2,7 @@ package com.lti.repo;
 
 import java.util.List;
 
+import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.UpdateUserDto;
 import com.lti.model.Admin;
 import com.lti.model.Application;
@@ -54,5 +55,16 @@ public interface RepositoryInterface {
 	// public Customer findByEmail(String email);
 
 	Application findByApplicationId(int id);
+	
+	public List<Application> findPendingApplications();
+	
+	public boolean validateApplication(int id);
+	
+	public Application rejctApplication(int id);
+	
+	public int addLoan(Loan loan);
+	public List<Loan> viewAllLoan();
+	public List<Loan> viewLoanByCustomerId(int id);
+	public StatusFetchByIdDto fetchStatus(int applicationId,int customerId);
 
 }

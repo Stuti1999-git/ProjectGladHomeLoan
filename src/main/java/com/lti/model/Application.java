@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 public class Application {
@@ -26,6 +27,7 @@ public class Application {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_id")
+	@JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
 	private Customer customer;
 
 	@Column
@@ -115,7 +117,10 @@ public class Application {
 	@Column
 	private LocalDate appointmentDate=LocalDate.now().plusDays(7);
 	
-	@OneToOne(mappedBy = "applicationLoan",cascade = CascadeType.ALL)
+
+	
+//	@JsonIgnore
+	@OneToOne(mappedBy = "applicationLoan",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Loan loan;
 	
 	
@@ -381,30 +386,24 @@ public class Application {
 		this.downPayment = downPayment;
 	}
 
+
+
+//	public Loan getLoan() {
+//		return loan;
+//	}
+//
+//	public void setLoan(Loan loan) {
+//		this.loan = loan;
+//	}
+
 	
 	public Loan getLoan() {
 		return loan;
 	}
 
-	public void setLoan(Loan loan) {
-		this.loan = loan;
-	}
 
-	@Override
-	public String toString() {
-		return "Application [applicationId=" + applicationId + ", customer=" + customer + ", gender=" + gender
-				+ ", address=" + address + ", userPAN=" + userPAN + ", aadharNumber=" + aadharNumber + ", nationality="
-				+ nationality + ", retirementAge=" + retirementAge + ", organisation=" + organisation + ", income="
-				+ income + ", loanAmount=" + loanAmount + ", propertyType=" + propertyType + ", propertyLocation="
-				+ propertyLocation + ", propertyCost=" + propertyCost + ", tenure=" + tenure + ", downPayment="
-				+ downPayment + ", maritialStatus=" + maritialStatus + ", noOfDependents=" + noOfDependents
-				+ ", depandentMonthlyExpenses=" + depandentMonthlyExpenses + ", personlExpenses=" + personlExpenses
-				+ ", existingLoan=" + existingLoan + ", emiExistingLoan=" + emiExistingLoan + ", maxLoanAmount="
-				+ maxLoanAmount + ", loanStatus=" + loanStatus + ", panCard=" + panCard + ", letterOfAgreement="
-				+ letterOfAgreement + ", noObjectionCerti=" + noObjectionCerti + ", saleAgreement=" + saleAgreement
-				+ ", aadharCard=" + aadharCard + ", salarySlip=" + salarySlip + ", appointmentDate=" + appointmentDate
-				+ ", loan=" + loan + "]";
-	}
+
+
 	
 
 

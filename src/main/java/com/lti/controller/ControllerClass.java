@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.util.FileCopyUtils;
@@ -19,14 +20,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.Dto.AdminLoginDto;
+
+import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.StatusFetchByIdDto;
+
 import com.lti.Dto.DocumentDto;
 import com.lti.Dto.ForgotPasswordDto;
 import com.lti.Dto.LoginDto;
+import com.lti.Dto.StatusSendDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
+import com.lti.model.Loan;
 import com.lti.service.ServiceInterface;
 import com.lti.status.AdminLoginStatus;
 import com.lti.status.EmailStatus;
@@ -164,6 +171,54 @@ public class ControllerClass {
 	@PostMapping("/viewApplication")
 	public Application findByApplicationId(@RequestBody Integer id) {
 		return userService.findByApplicationId(id);
+	}
+
+	@GetMapping("/viewAllPendingApplication")
+	public List<Application> findPendingApplications() {
+		return userService.findPendingApplications();
+	}
+	
+	
+	@PostMapping("/validateCustomer")
+	public Loan validateCustomer(@RequestBody Integer id) {
+		return userService.validateApplication(id);
+	}
+	
+	@PostMapping("/rejectCustomer")
+	public Application rejectCustomer(@RequestBody Integer id) {
+		return userService.rejctApplication(id);
+	}
+	
+	@GetMapping("/viewAllLoan")
+	public List<Loan> viewAllLoan() {
+		return userService.viewAllLoan();
+	}
+	
+	
+	@PostMapping("/viewLoanByCustomerId")
+	public List<Loan> viewLoanByCustomerId(@RequestBody Integer id) {
+//		int id = fetchById.getId();
+		return userService.viewLoanByCustomerId(id);
+	}
+	
+	@PostMapping("/searchStatus")
+	public StatusFetchByIdDto searchStatus(@RequestBody StatusSendDto statusSendDto) {
+		int applicationId = statusSendDto.getApplicationId();
+		int customerId = statusSendDto.getCustomerid();
+		try {
+			StatusFetchByIdDto result = userService.searchStatus(applicationId,customerId);
+			result.setStatus(StatusType.SUCCESS);
+			result.setMessage("Successfully Fetched");
+			return result;
+			
+		}
+		catch(NullPointerException e) {
+			StatusFetchByIdDto status = new StatusFetchByIdDto();
+			status.setStatus(StatusType.FAILURE);
+			status.setMessage(e.getMessage());
+			return status;
+		}
+		
 	}
 
 	@PostMapping("/pic-upload")
