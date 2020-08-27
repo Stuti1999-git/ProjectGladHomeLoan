@@ -197,7 +197,7 @@ public class ControllerClass {
 	}
 
 	@PostMapping("/changeStatus")
-	public Status changeStatus(Application application) {
+	public Status changeStatus( Application application) {
 		Status status = new Status();
 		if (userService.changeStatus(application)) {
 			status.setMessage("Updated Successfully");
