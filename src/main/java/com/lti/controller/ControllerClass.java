@@ -1,14 +1,15 @@
 package com.lti.controller;
 
+
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
+//github.com/Stuti1999-git/ProjectGladHomeLoan.git
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
+//github.com/Stuti1999-git/ProjectGladHomeLoan.git
+
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.util.FileCopyUtils;
@@ -19,22 +20,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.Dto.AdminLoginDto;
-
-import com.lti.Dto.ApplicationDto;
-import com.lti.Dto.StatusFetchByIdDto;
-
+import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.DocumentDto;
 import com.lti.Dto.ForgotPasswordDto;
+//github.com/Stuti1999-git/ProjectGladHomeLoan.git
 import com.lti.Dto.LoginDto;
+import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.StatusSendDto;
 import com.lti.exception.CustomerServiceException;
+import com.lti.externalAPIs.mailAPI;
 import com.lti.model.Admin;
 import com.lti.model.Application;
 import com.lti.model.Customer;
 import com.lti.model.Loan;
 import com.lti.service.ServiceInterface;
 import com.lti.status.AdminLoginStatus;
-import com.lti.status.CustomerStatus;
+import com.lti.status.EmailStatus;
 import com.lti.status.LoginStatus;
 import com.lti.status.RegisterStatus;
 import com.lti.status.Status;
@@ -76,55 +77,7 @@ public class ControllerClass {
 
 	}
 
-	//	public Status forgotPassword(@RequestBody ForgotPasswordDto forgotPassDto) {
-	//		try {
-	//	CustomerStatus status=new CustomerStatus();
-	//		Customer customer=userService.findByEmail(forgotPassDto.getEmail());
-	//		
-	//		
-	//	if(customer!=null) {
-	//	status.setStatus(StatusType.SUCCESS);
-	//	status.setMessage("Check Your Email for Password Reset.");
-	//	SimpleMailMessage message = new SimpleMailMessage();
-	//	message.setFrom("abhishek.sethi@lntinfotech.com");
-	//	message.setTo(customer.getCustomerEmail());
-	//	message.setSubject("Forgot Password");
-	//	message.setText("To complete the password reset process, use the token generated to"
-	//			+ " reset the password: " + status.setToken(UUID.randomUUID().toString());
-	//	mailSender.send(message);
-	//		return status;
-	//		}}catch (CustomerServiceException e) {
-	//			Status status = new Status();
-	//			status.setStatus(StatusType.FAILURE);
-	//			status.setMessage(e.getMessage());
-	//			return status;
-	//		}
-	//		
-	//	}
 
-	//	// Receive the address and send an email
-	//    @RequestMapping(value="/forgot-password", method=RequestMethod.POST)
-	//    public ModelAndView forgotUserPassword(ModelAndView modelAndView, User user) {
-	//        Customer existingUser = userRepository.findByEmailIdIgnoreCase(user.getEmailId());
-	//        if (existingUser != null) {
-	//            SimpleMailMessage mailMessage = new SimpleMailMessage();
-	//            mailMessage.setTo(existingUser.getEmailId());
-	//            mailMessage.setSubject("Complete Password Reset!");
-	//            mailMessage.setFrom("test-email@gmail.com");
-	//            mailMessage.setText("To complete the password reset process, please click here: "
-	//              + "http://localhost:8082/confirm-reset?token="+confirmationToken.getConfirmationToken());
-	//
-	//            // Send the email
-	//            emailSenderService.sendEmail(mailMessage);
-	//
-	//            modelAndView.addObject("message", "Request to reset password received. Check your inbox for the reset link.");
-	//            modelAndView.setViewName("successForgotPassword");
-	//
-	//        } else {
-	//            modelAndView.addObject("message", "This email address does not exist!");
-	//            modelAndView.setViewName("error");
-	//        }
-	//        return modelAndView;
 	@PostMapping("/adminLogin")
 	public Status adminLogin(@RequestBody AdminLoginDto loginDto) {
 		try {
@@ -172,7 +125,7 @@ public class ControllerClass {
 
 	@PostMapping("/applyLoan")
 	public int addloanApplication(@RequestBody Application application) {
-		//System.out.println(application);
+		// System.out.println(application);
 		return userService.addLoanApplication(application);
 	}
 
@@ -202,18 +155,24 @@ public class ControllerClass {
 	}
 
 	@PostMapping("/changeStatus")
-	public Status changeStatus(Application application) {
+	public Status changeStatus( Application application) {
 		Status status = new Status();
-		if(userService.changeStatus(application)) {
+		if (userService.changeStatus(application)) {
 			status.setMessage("Updated Successfully");
 			status.setStatus(StatusType.SUCCESS);
 			return status;
-		}
-		else {
+		} else {
 			status.setMessage("Not Updated");
 			status.setStatus(StatusType.FAILURE);
 			return status;
 		}
+	}
+
+	@PostMapping("/generateCheckList")
+	public ChecklistDto checkList(@RequestBody StatusSendDto status) {
+		int applicationId = status.getApplicationId();
+		int customerId = status.getCustomerid();
+		return userService.checklist(applicationId, customerId);
 	}
 
 	@PostMapping("/viewApplication")
@@ -301,7 +260,7 @@ public class ControllerClass {
 			return status;
 		}
 
-		Application application=userService.get(documentDto.getApplicationId());
+		Application application = userService.get(documentDto.getApplicationId());
 		application.setAadharCard(fileName);
 		userService.update(application);
 		Status status = new Status();
@@ -358,7 +317,6 @@ public class ControllerClass {
 		return status;
 	}
 
-
 	@PostMapping("/LOAUpload")
 	public Status uploadLOA(DocumentDto document) {
 		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
@@ -382,7 +340,6 @@ public class ControllerClass {
 		status.setMessage("Uploaded!");
 		return status;
 	}
-
 
 	@PostMapping("/saleAgreementUpload")
 	public Status uploadSaleAgreement(DocumentDto document) {
@@ -423,7 +380,7 @@ public class ControllerClass {
 			return status;
 		}
 		Application application = userService.get(document.getApplicationId());
-		application.setSaleAgreement(fileName);
+		application.setSalarySlip(fileName);
 		userService.update(application);
 		Status status = new Status();
 		status.setStatus(StatusType.SUCCESS);
@@ -431,9 +388,55 @@ public class ControllerClass {
 		return status;
 	}
 
+
 	@PostMapping("/viewByLoanId")
 	public Loan viewLoanByLoanId(@RequestBody Integer id) {
-		return userService.viewLoanByLoanId(id);
+		return userService.viewLoanByLoanId(id);}
+
+	@PostMapping(path = "/verifyEmail")
+	public EmailStatus verifyEmail(@RequestBody ForgotPasswordDto forgotPasswordDto) {
+		int otp = 0;
+		try {
+			otp = userService.findByEmailforOTP(forgotPasswordDto.getEmail());
+			EmailStatus emailStatus = new EmailStatus();
+			mailAPI emailUtility = new mailAPI();
+			emailUtility.sendOtpEmail(mailSender, otp, forgotPasswordDto.getEmail());
+			emailStatus.setUserOTP(otp);
+			emailStatus.setStatus(StatusType.SUCCESS);
+			return emailStatus;
+
+		} catch (ServiceException e) {
+
+			EmailStatus status = new EmailStatus();
+			status.setStatus(StatusType.FAILURE);
+			status.setMessage(e.getMessage());
+			return status;
+		}
+
+	}
+
+
+	@PostMapping(path = "/forgotPassword")
+	public Status forgotPassword(@RequestBody ForgotPasswordDto forgotPassworddto) {
+
+		try {
+			userService.forgotPassword(forgotPassworddto.getEmail(), forgotPassworddto.getNewPassword());
+			EmailStatus emailStatus = new EmailStatus();
+			mailAPI emailUtility = new mailAPI();
+			emailUtility.resetPasswordEmail(mailSender, forgotPassworddto.getEmail());
+
+			emailStatus.setStatus(StatusType.SUCCESS);
+			return emailStatus;
+
+		} catch (ServiceException e) {
+
+			EmailStatus status = new EmailStatus();
+			status.setStatus(StatusType.FAILURE);
+
+			status.setMessage(e.getMessage());
+			return status;
+		}
+
 	}
 
 }

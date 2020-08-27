@@ -2,9 +2,13 @@ package com.lti.service;
 
 import java.util.List;
 
+
+import javax.annotation.Resource;
+
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.UpdateAdminDto;
 import com.lti.model.Admin;
@@ -23,6 +27,9 @@ public interface ServiceInterface {
 
 	public int addLoanApplication(Application application);
 
+	public int findByEmailforOTP(String userEmail);
+
+	public boolean forgotPassword(String userEmail, String newPassword);
 	// Admin
 
 	public Admin adminLogin(int employeeId, String adminPassword);
@@ -34,8 +41,6 @@ public interface ServiceInterface {
 	public boolean updateAdmin(Admin admin);
 
 	public Customer findAUser(int userId);
-
-	public Customer findByEmail(String email);
 
 	public List<Application> viewAllApplications();
 
@@ -50,6 +55,13 @@ public interface ServiceInterface {
 	public List<Loan> viewAllLoan();
 	public List<Loan> viewLoanByCustomerId(int id);
 	public StatusFetchByIdDto searchStatus(int applicationId,int customerId);
+
+
+	
+
+	ChecklistDto checklist(int applicationId, int customerId);
+
+	
 
 	public Application get(int applicationId);
 

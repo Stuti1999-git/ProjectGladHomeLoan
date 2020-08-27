@@ -4,6 +4,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class DocumentDto {
 
+	
+
 	private int applicationId;
 	private MultipartFile aadharCard;
 	private MultipartFile panCard;
@@ -67,6 +69,7 @@ public class DocumentDto {
 	public void setSalarySlip(MultipartFile salarySlip) {
 		this.salarySlip = salarySlip;
 	}
+
 
 	
 }
