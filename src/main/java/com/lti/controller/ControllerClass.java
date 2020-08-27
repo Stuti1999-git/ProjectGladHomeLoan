@@ -1,15 +1,15 @@
 package com.lti.controller;
 
+
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
+//github.com/Stuti1999-git/ProjectGladHomeLoan.git
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+
+//github.com/Stuti1999-git/ProjectGladHomeLoan.git
 
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.util.FileCopyUtils;
@@ -20,13 +20,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lti.Dto.AdminLoginDto;
-
-import com.lti.Dto.ApplicationDto;
-import com.lti.Dto.StatusFetchByIdDto;
-
+import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.DocumentDto;
 import com.lti.Dto.ForgotPasswordDto;
+//github.com/Stuti1999-git/ProjectGladHomeLoan.git
 import com.lti.Dto.LoginDto;
+import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.StatusSendDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.externalAPIs.mailAPI;
@@ -79,6 +78,7 @@ public class ControllerClass {
 		}
 
 	}
+
 
 	@PostMapping("/adminLogin")
 	public Status adminLogin(@RequestBody AdminLoginDto loginDto) {
@@ -157,7 +157,7 @@ public class ControllerClass {
 	}
 
 	@PostMapping("/changeStatus")
-	public Status changeStatus(Application application) {
+	public Status changeStatus( Application application) {
 		Status status = new Status();
 		if (userService.changeStatus(application)) {
 			status.setMessage("Updated Successfully");
@@ -170,6 +170,13 @@ public class ControllerClass {
 		}
 	}
 
+	@PostMapping("/generateCheckList")
+	public ChecklistDto checkList(@RequestBody StatusSendDto status) {
+		int applicationId = status.getApplicationId();
+		int customerId = status.getCustomerid();
+		return userService.checklist(applicationId, customerId);
+	}
+
 	@PostMapping("/viewApplication")
 	public Application findByApplicationId(@RequestBody Integer id) {
 		return userService.findByApplicationId(id);
@@ -179,30 +186,47 @@ public class ControllerClass {
 	public List<Application> findPendingApplications() {
 		return userService.findPendingApplications();
 	}
-	
-	
+
+
 	@PostMapping("/validateCustomer")
 	public Loan validateCustomer(@RequestBody Integer id) {
+		Application application = userService.findByApplicationId(id);
+		String customerEmail = application.getCustomer().getCustomerEmail();
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("abhishek.sethi@lntinfotech.com");
+		message.setTo(customerEmail);
+		message.setSubject("Loan Updation Status");
+		message.setText("Your Loan Request has been ACCEPTED.Amount has been credited to your New Loan Account."
+				+ " Please check details under EMI details after logging in with your CustomerID." );
+		mailSender.send(message);
 		return userService.validateApplication(id);
 	}
-	
+
 	@PostMapping("/rejectCustomer")
 	public Application rejectCustomer(@RequestBody Integer id) {
+		Application application = userService.findByApplicationId(id);
+		String customerEmail = application.getCustomer().getCustomerEmail();
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("abhishek.sethi@lntinfotech.com");
+		message.setTo(customerEmail);
+		message.setSubject("Loan Updation Status");
+		message.setText("We're Regret to inform you that your Loan Request has been REJECTED due to some reasons." );
+		mailSender.send(message);
 		return userService.rejctApplication(id);
 	}
-	
+
 	@GetMapping("/viewAllLoan")
 	public List<Loan> viewAllLoan() {
 		return userService.viewAllLoan();
 	}
-	
-	
+
+
 	@PostMapping("/viewLoanByCustomerId")
 	public List<Loan> viewLoanByCustomerId(@RequestBody Integer id) {
-//		int id = fetchById.getId();
+		//		int id = fetchById.getId();
 		return userService.viewLoanByCustomerId(id);
 	}
-	
+
 	@PostMapping("/searchStatus")
 	public StatusFetchByIdDto searchStatus(@RequestBody StatusSendDto statusSendDto) {
 		int applicationId = statusSendDto.getApplicationId();
@@ -212,7 +236,7 @@ public class ControllerClass {
 			result.setStatus(StatusType.SUCCESS);
 			result.setMessage("Successfully Fetched");
 			return result;
-			
+
 		}
 		catch(NullPointerException e) {
 			StatusFetchByIdDto status = new StatusFetchByIdDto();
@@ -220,12 +244,12 @@ public class ControllerClass {
 			status.setMessage(e.getMessage());
 			return status;
 		}
-		
+
 	}
 
 	@PostMapping("/pic-upload")
 	public Status upload(DocumentDto documentDto) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";  //D:/LoanDocumentsUpload/
 		String fileName = documentDto.getAadharCard().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -249,7 +273,7 @@ public class ControllerClass {
 
 	@PostMapping("/PANUpload")
 	public Status uploadPAN(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getPanCard().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -273,7 +297,7 @@ public class ControllerClass {
 
 	@PostMapping("/NOCUpload")
 	public Status uploadNOC(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getNoObjectionCerti().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -297,7 +321,7 @@ public class ControllerClass {
 
 	@PostMapping("/LOAUpload")
 	public Status uploadLOA(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getLetterOfAgreement().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -321,7 +345,7 @@ public class ControllerClass {
 
 	@PostMapping("/saleAgreementUpload")
 	public Status uploadSaleAgreement(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getSaleAgreement().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -345,7 +369,7 @@ public class ControllerClass {
 
 	@PostMapping("/salarySlipUpload")
 	public Status uploadSalarySlip(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getSalarySlip().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -358,13 +382,18 @@ public class ControllerClass {
 			return status;
 		}
 		Application application = userService.get(document.getApplicationId());
-		application.setSaleAgreement(fileName);
+		application.setSalarySlip(fileName);
 		userService.update(application);
 		Status status = new Status();
 		status.setStatus(StatusType.SUCCESS);
 		status.setMessage("Uploaded!");
 		return status;
 	}
+
+
+	@PostMapping("/viewByLoanId")
+	public Loan viewLoanByLoanId(@RequestBody Integer id) {
+		return userService.viewLoanByLoanId(id);}
 
 	@PostMapping(path = "/verifyEmail")
 	public EmailStatus verifyEmail(@RequestBody ForgotPasswordDto forgotPasswordDto) {
@@ -387,6 +416,7 @@ public class ControllerClass {
 		}
 
 	}
+
 
 	@PostMapping(path = "/forgotPassword")
 	public Status forgotPassword(@RequestBody ForgotPasswordDto forgotPassworddto) {

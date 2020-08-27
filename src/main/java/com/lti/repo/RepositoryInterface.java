@@ -2,6 +2,9 @@ package com.lti.repo;
 
 import java.util.List;
 
+
+import com.lti.Dto.ChecklistDto;
+
 import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.Dto.UpdateUserDto;
 import com.lti.model.Admin;
@@ -66,5 +69,15 @@ public interface RepositoryInterface {
 	public List<Loan> viewAllLoan();
 	public List<Loan> viewLoanByCustomerId(int id);
 	public StatusFetchByIdDto fetchStatus(int applicationId,int customerId);
+	public Loan viewLoanByLoanId(int id);
+
+
+	void save(Application application);
+
+	Application findAppById(int id);
+
+	ChecklistDto checklist(int appId, int custId);
+	
+	
 
 }

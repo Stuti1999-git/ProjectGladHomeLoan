@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.lti.Dto.ApplicationDto;
+import com.lti.Dto.ChecklistDto;
 import com.lti.Dto.StatusFetchByIdDto;
 import com.lti.exception.CustomerServiceException;
 import com.lti.externalAPIs.mailAPI;
@@ -81,7 +81,17 @@ public class ServiceClass implements ServiceInterface {
 
 		return repo.addLoanApplication(application);
 	}
+	
+	
+	
 
+	@Override
+	public ChecklistDto checklist(int applicationId, int customerId) {
+		return repo.checklist(applicationId, customerId);
+	}
+	
+	
+	
 	@Override
 	public Admin adminLogin(int adminId, String adminPassword) {
 		try {
@@ -199,6 +209,10 @@ public class ServiceClass implements ServiceInterface {
 	}
 
 	@Override
+	public Loan viewLoanByLoanId(int id) {
+		return repo.viewLoanByLoanId(id);
+	}
+
 	public int findByEmailforOTP(String userEmail) {
 
 		if (repo.findByEmail(userEmail)) {

@@ -1,6 +1,7 @@
 package com.lti.Dto;
 
 public class StatusSendDto {
+
 	private int applicationId;
 	private int customerid;
 	public int getApplicationId() {
