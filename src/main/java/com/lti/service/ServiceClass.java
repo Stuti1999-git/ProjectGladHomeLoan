@@ -199,4 +199,9 @@ public class ServiceClass implements ServiceInterface {
 	public void update(Application application) {
 		repo.addLoanApplication(application);
 	}
+
+	@Override
+	public Loan viewLoanByLoanId(int id) {
+		return repo.viewLoanByLoanId(id);
+	}
 }

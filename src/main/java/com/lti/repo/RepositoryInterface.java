@@ -64,5 +64,6 @@ public interface RepositoryInterface {
 	public List<Loan> viewAllLoan();
 	public List<Loan> viewLoanByCustomerId(int id);
 	public StatusFetchByIdDto fetchStatus(int applicationId,int customerId);
+	public Loan viewLoanByLoanId(int id);
 
 }

@@ -76,55 +76,55 @@ public class ControllerClass {
 
 	}
 
-//	public Status forgotPassword(@RequestBody ForgotPasswordDto forgotPassDto) {
-//		try {
-//	CustomerStatus status=new CustomerStatus();
-//		Customer customer=userService.findByEmail(forgotPassDto.getEmail());
-//		
-//		
-//	if(customer!=null) {
-//	status.setStatus(StatusType.SUCCESS);
-//	status.setMessage("Check Your Email for Password Reset.");
-//	SimpleMailMessage message = new SimpleMailMessage();
-//	message.setFrom("abhishek.sethi@lntinfotech.com");
-//	message.setTo(customer.getCustomerEmail());
-//	message.setSubject("Forgot Password");
-//	message.setText("To complete the password reset process, use the token generated to"
-//			+ " reset the password: " + status.setToken(UUID.randomUUID().toString());
-//	mailSender.send(message);
-//		return status;
-//		}}catch (CustomerServiceException e) {
-//			Status status = new Status();
-//			status.setStatus(StatusType.FAILURE);
-//			status.setMessage(e.getMessage());
-//			return status;
-//		}
-//		
-//	}
+	//	public Status forgotPassword(@RequestBody ForgotPasswordDto forgotPassDto) {
+	//		try {
+	//	CustomerStatus status=new CustomerStatus();
+	//		Customer customer=userService.findByEmail(forgotPassDto.getEmail());
+	//		
+	//		
+	//	if(customer!=null) {
+	//	status.setStatus(StatusType.SUCCESS);
+	//	status.setMessage("Check Your Email for Password Reset.");
+	//	SimpleMailMessage message = new SimpleMailMessage();
+	//	message.setFrom("abhishek.sethi@lntinfotech.com");
+	//	message.setTo(customer.getCustomerEmail());
+	//	message.setSubject("Forgot Password");
+	//	message.setText("To complete the password reset process, use the token generated to"
+	//			+ " reset the password: " + status.setToken(UUID.randomUUID().toString());
+	//	mailSender.send(message);
+	//		return status;
+	//		}}catch (CustomerServiceException e) {
+	//			Status status = new Status();
+	//			status.setStatus(StatusType.FAILURE);
+	//			status.setMessage(e.getMessage());
+	//			return status;
+	//		}
+	//		
+	//	}
 
-//	// Receive the address and send an email
-//    @RequestMapping(value="/forgot-password", method=RequestMethod.POST)
-//    public ModelAndView forgotUserPassword(ModelAndView modelAndView, User user) {
-//        Customer existingUser = userRepository.findByEmailIdIgnoreCase(user.getEmailId());
-//        if (existingUser != null) {
-//            SimpleMailMessage mailMessage = new SimpleMailMessage();
-//            mailMessage.setTo(existingUser.getEmailId());
-//            mailMessage.setSubject("Complete Password Reset!");
-//            mailMessage.setFrom("test-email@gmail.com");
-//            mailMessage.setText("To complete the password reset process, please click here: "
-//              + "http://localhost:8082/confirm-reset?token="+confirmationToken.getConfirmationToken());
-//
-//            // Send the email
-//            emailSenderService.sendEmail(mailMessage);
-//
-//            modelAndView.addObject("message", "Request to reset password received. Check your inbox for the reset link.");
-//            modelAndView.setViewName("successForgotPassword");
-//
-//        } else {
-//            modelAndView.addObject("message", "This email address does not exist!");
-//            modelAndView.setViewName("error");
-//        }
-//        return modelAndView;
+	//	// Receive the address and send an email
+	//    @RequestMapping(value="/forgot-password", method=RequestMethod.POST)
+	//    public ModelAndView forgotUserPassword(ModelAndView modelAndView, User user) {
+	//        Customer existingUser = userRepository.findByEmailIdIgnoreCase(user.getEmailId());
+	//        if (existingUser != null) {
+	//            SimpleMailMessage mailMessage = new SimpleMailMessage();
+	//            mailMessage.setTo(existingUser.getEmailId());
+	//            mailMessage.setSubject("Complete Password Reset!");
+	//            mailMessage.setFrom("test-email@gmail.com");
+	//            mailMessage.setText("To complete the password reset process, please click here: "
+	//              + "http://localhost:8082/confirm-reset?token="+confirmationToken.getConfirmationToken());
+	//
+	//            // Send the email
+	//            emailSenderService.sendEmail(mailMessage);
+	//
+	//            modelAndView.addObject("message", "Request to reset password received. Check your inbox for the reset link.");
+	//            modelAndView.setViewName("successForgotPassword");
+	//
+	//        } else {
+	//            modelAndView.addObject("message", "This email address does not exist!");
+	//            modelAndView.setViewName("error");
+	//        }
+	//        return modelAndView;
 	@PostMapping("/adminLogin")
 	public Status adminLogin(@RequestBody AdminLoginDto loginDto) {
 		try {
@@ -220,35 +220,52 @@ public class ControllerClass {
 	public Application findByApplicationId(@RequestBody Integer id) {
 		return userService.findByApplicationId(id);
 	}
-	
+
 	@GetMapping("/viewAllPendingApplication")
 	public List<Application> findPendingApplications() {
 		return userService.findPendingApplications();
 	}
-	
-	
+
+
 	@PostMapping("/validateCustomer")
 	public Loan validateCustomer(@RequestBody Integer id) {
+		Application application = userService.findByApplicationId(id);
+		String customerEmail = application.getCustomer().getCustomerEmail();
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("abhishek.sethi@lntinfotech.com");
+		message.setTo(customerEmail);
+		message.setSubject("Loan Updation Status");
+		message.setText("Your Loan Request has been ACCEPTED.Amount has been credited to your New Loan Account."
+				+ " Please check details under EMI details after logging in with your CustomerID." );
+		mailSender.send(message);
 		return userService.validateApplication(id);
 	}
-	
+
 	@PostMapping("/rejectCustomer")
 	public Application rejectCustomer(@RequestBody Integer id) {
+		Application application = userService.findByApplicationId(id);
+		String customerEmail = application.getCustomer().getCustomerEmail();
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setFrom("abhishek.sethi@lntinfotech.com");
+		message.setTo(customerEmail);
+		message.setSubject("Loan Updation Status");
+		message.setText("We're Regret to inform you that your Loan Request has been REJECTED due to some reasons." );
+		mailSender.send(message);
 		return userService.rejctApplication(id);
 	}
-	
+
 	@GetMapping("/viewAllLoan")
 	public List<Loan> viewAllLoan() {
 		return userService.viewAllLoan();
 	}
-	
-	
+
+
 	@PostMapping("/viewLoanByCustomerId")
 	public List<Loan> viewLoanByCustomerId(@RequestBody Integer id) {
-//		int id = fetchById.getId();
+		//		int id = fetchById.getId();
 		return userService.viewLoanByCustomerId(id);
 	}
-	
+
 	@PostMapping("/searchStatus")
 	public StatusFetchByIdDto searchStatus(@RequestBody StatusSendDto statusSendDto) {
 		int applicationId = statusSendDto.getApplicationId();
@@ -258,7 +275,7 @@ public class ControllerClass {
 			result.setStatus(StatusType.SUCCESS);
 			result.setMessage("Successfully Fetched");
 			return result;
-			
+
 		}
 		catch(NullPointerException e) {
 			StatusFetchByIdDto status = new StatusFetchByIdDto();
@@ -266,12 +283,12 @@ public class ControllerClass {
 			status.setMessage(e.getMessage());
 			return status;
 		}
-		
+
 	}
 
 	@PostMapping("/pic-upload")
 	public Status upload(DocumentDto documentDto) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";  //D:/LoanDocumentsUpload/
 		String fileName = documentDto.getAadharCard().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -295,7 +312,7 @@ public class ControllerClass {
 
 	@PostMapping("/PANUpload")
 	public Status uploadPAN(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getPanCard().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -310,16 +327,16 @@ public class ControllerClass {
 		Application application = userService.get(document.getApplicationId());
 		application.setPanCard(fileName);
 		userService.update(application);
-		
+
 		Status status = new Status();
 		status.setStatus(StatusType.SUCCESS);
 		status.setMessage("Uploaded!");
 		return status;
 	}
-	
+
 	@PostMapping("/NOCUpload")
 	public Status uploadNOC(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getNoObjectionCerti().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -334,17 +351,17 @@ public class ControllerClass {
 		Application application = userService.get(document.getApplicationId());
 		application.setNoObjectionCerti(fileName);
 		userService.update(application);
-		
+
 		Status status = new Status();
 		status.setStatus(StatusType.SUCCESS);
 		status.setMessage("Uploaded!");
 		return status;
 	}
-	
-	
+
+
 	@PostMapping("/LOAUpload")
 	public Status uploadLOA(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getLetterOfAgreement().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -359,17 +376,17 @@ public class ControllerClass {
 		Application application = userService.get(document.getApplicationId());
 		application.setLetterOfAgreement(fileName);
 		userService.update(application);
-		
+
 		Status status = new Status();
 		status.setStatus(StatusType.SUCCESS);
 		status.setMessage("Uploaded!");
 		return status;
 	}
-	
-	
+
+
 	@PostMapping("/saleAgreementUpload")
 	public Status uploadSaleAgreement(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getSaleAgreement().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -384,16 +401,16 @@ public class ControllerClass {
 		Application application = userService.get(document.getApplicationId());
 		application.setSaleAgreement(fileName);
 		userService.update(application);
-		
+
 		Status status = new Status();
 		status.setStatus(StatusType.SUCCESS);
 		status.setMessage("Uploaded!");
 		return status;
 	}
-	
+
 	@PostMapping("/salarySlipUpload")
 	public Status uploadSalarySlip(DocumentDto document) {
-		String imageUploadLocation = "D:/LoanDocumentsUpload/";
+		String imageUploadLocation = "/Users/sethi/Desktop/LoanDocuments/";
 		String fileName = document.getSalarySlip().getOriginalFilename();
 		String targetFile = imageUploadLocation + fileName;
 		try {
@@ -414,6 +431,9 @@ public class ControllerClass {
 		return status;
 	}
 
-	
-
+	@PostMapping("/viewByLoanId")
+	public Loan viewLoanByLoanId(@RequestBody Integer id) {
+		return userService.viewLoanByLoanId(id);
 	}
+
+}

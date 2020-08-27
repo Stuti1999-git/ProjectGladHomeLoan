@@ -228,4 +228,10 @@ public class RepositoryClass implements RepositoryInterface {
 		}
 		return null;
 	}
+	
+	@Override
+	public Loan viewLoanByLoanId(int id) {
+		Loan loan = em.find(Loan.class, id);
+		return loan;
+	}
 }

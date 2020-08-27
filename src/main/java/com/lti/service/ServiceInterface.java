@@ -54,4 +54,5 @@ public interface ServiceInterface {
 	public Application get(int applicationId);
 
 	public void update(Application application);
+	public Loan viewLoanByLoanId(int id);
 }
