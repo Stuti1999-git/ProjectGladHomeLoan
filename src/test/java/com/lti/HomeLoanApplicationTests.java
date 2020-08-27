@@ -35,9 +35,7 @@ class HomeLoanApplicationTests {
 		
 		repo.registerUser(customer);
 	}
-	
-
-	
+		
 	
 	@Test
 	void registerAdmin() {

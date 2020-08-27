@@ -49,69 +49,36 @@ public class ServiceClass implements ServiceInterface {
 
 	@Override
 	public int addLoanApplication(Application application) {
-		/*
-		 * Customer customer = new Customer(); Application app = new Application();
-		 * customer.setCustomerId(application.getCustomerId());
-		 * app.setCustomer(customer); app.setAadharCard(application.getAadharCard());
-		 * app.setAadharNumber(application.getAadharNumber());
-		 * app.setAddress(application.getAddress());
-		 * app.setDepandentMonthlyExpenses(application.getDepandentMonthlyExpenses());
-		 * app.setDownPayment(application.getDownPayment());
-		 * app.setEmiExistingLoan(application.getEmiExistingLoan());
-		 * app.setExistingLoan(application.getExistingLoan());
-		 * app.setGender(application.getGender());
-		 * app.setIncome(application.getIncome());
-		 * app.setLetterOfAgreement(application.getLetterOfAgreement());
-		 * app.setLoanAmount(application.getLoanAmount());
-		 * app.setLoanStatus(application.getLoanStatus());
-		 * app.setMaritialStatus(application.getMaritialStatus());
-		 * app.setNationality(application.getNationality());
-		 * app.setNoOfDependents(application.getNoOfDependents());
-		 * app.setOrganisation(application.getOrganisation());
-		 * app.setPersonlExpenses(application.getPersonlExpenses());
-		 */
-		
-		
- int noOfdep = application.getNoOfDependents();
- System.out.println(application.getExistingLoan());
-		
+
+		int noOfdep = application.getNoOfDependents();
+		System.out.println(application.getExistingLoan());
+
 		if (noOfdep > 0) {
-			
+
 			if (application.getExistingLoan().equals("YES")) {
 				application.setMaxLoanAmount(application.getIncome() - application.getDepandentMonthlyExpenses()
-				- application.getEmiExistingLoan() - application.getPersonlExpenses());
+						- application.getEmiExistingLoan() - application.getPersonlExpenses());
 				System.out.println("Hiiiiiiiiiiiiiiiiiii");
-			}
-			else {
+			} else {
 				application.setMaxLoanAmount(application.getIncome() - application.getDepandentMonthlyExpenses()
-						 - application.getPersonlExpenses());
+						- application.getPersonlExpenses());
 				System.out.println("Byeeeeeeeeeeee");
 			}
-		}
-			else {
-				if (application.getExistingLoan() == "YES") {
-					application.setMaxLoanAmount(application.getIncome() 
-					- application.getEmiExistingLoan() - application.getPersonlExpenses());
-				}
-				else {
-					application.setMaxLoanAmount(application.getIncome() 
-							 - application.getPersonlExpenses());
-				}
-				
+		} else {
+			if (application.getExistingLoan() == "YES") {
+				application.setMaxLoanAmount(
+						application.getIncome() - application.getEmiExistingLoan() - application.getPersonlExpenses());
+			} else {
+				application.setMaxLoanAmount(application.getIncome() - application.getPersonlExpenses());
 			}
-		
+
+		}
+
 		return repo.addLoanApplication(application);
 	}
 	
-	@Override
-	public Application get(int id) {
-		return repo.findAppById(id);
-	}
 	
-	@Override
-	public void update(Application application) {
-		repo.save(application);
-	}
+	
 
 	@Override
 	public ChecklistDto checklist(int applicationId, int customerId) {
@@ -141,17 +108,17 @@ public class ServiceClass implements ServiceInterface {
 
 	@Override
 	public boolean updateAdmin(Admin admin) {
-		if(repo.isAdminPresent(admin.getAdminId()))
+		if (repo.isAdminPresent(admin.getAdminId()))
 			return repo.updateAdmin(admin);
-		
-	return false;
+
+		return false;
 	}
 
 	@Override
 	public Admin findAAdminById(int adminId) {
 		return repo.findAdminById(adminId);
 	}
-	
+
 	@Override
 	public Customer findAUser(int userId) {
 		return repo.findAUser(userId);
@@ -172,4 +139,18 @@ public class ServiceClass implements ServiceInterface {
 		return repo.findByApplicationId(id);
 	}
 
+	@Override
+	public Customer findByEmail(String email) {
+		return repo.findbyEmail(email);
+	}
+
+	@Override
+	public Application get(int ApplicationId) {
+		return repo.findByApplicationId(ApplicationId);
+	}
+
+	@Override
+	public void update(Application application) {
+		repo.addLoanApplication(application);
+	}
 }

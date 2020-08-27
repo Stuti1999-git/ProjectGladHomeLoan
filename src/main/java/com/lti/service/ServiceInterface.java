@@ -35,17 +35,23 @@ public interface ServiceInterface {
 
 	public Customer findAUser(int userId);
 
+	public Customer findByEmail(String email);
+
 	public List<Application> viewAllApplications();
 
 	public boolean changeStatus(Application application);
 
 	public Application findByApplicationId(int id);
 
-	Application get(int id);
 
-	void update(Application application);
+	
 
 	ChecklistDto checklist(int applicationId, int customerId);
 
 	
+
+	public Application get(int applicationId);
+
+	public void update(Application application);
+
 }
