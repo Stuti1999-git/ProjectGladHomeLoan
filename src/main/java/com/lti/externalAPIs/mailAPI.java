@@ -44,7 +44,7 @@ public class mailAPI {
 		message.setSubject("Verify Email");
 		message.setText("Dear " + "\n\n" + "You have successfully verified your registered email." + "\n"
 				+ "This is your otp " + otp + ". Use it to reset your password." + "\n\n" + "Have a good day." + "\n"
-				+ "LTI HomeLoan");
+				+ "Bank of LTI");
 		mailSender.send(message);
 
 	}
@@ -55,7 +55,7 @@ public class mailAPI {
 		message.setTo(userEmail);
 		message.setSubject(" Password updated");
 		message.setText("Dear User!" + "\n\n" + "Your password has been successfully updated." + "\n\n"
-				+ "Have a good day." + "\n" + "LTI HomeLoan");
+				+ "Have a good day." + "\n" + "Bank of LTI");
 		mailSender.send(message);
 	}
 
